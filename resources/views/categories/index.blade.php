@@ -9,9 +9,9 @@
         <section class="text-center mb-12">
             <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
                 @foreach ($categories as $category)
-                    <div
-                        class="relative overflow-hidden rounded-lg shadow-lg bg-white group transform transition-transform duration-300 hover:-translate-y-2">
-                        <img src="https://fastly.picsum.photos/id/160/200/200.jpg?hmac=0fql9ogVWlCf8ddvQCF-vGiiso9i0m0A68TP5De28tI"
+                    <a href="{{ route('categories.products', $category->id) }}"
+                        class="block relative overflow-hidden rounded-lg shadow-lg bg-white group transform transition-transform duration-300 hover:-translate-y-2">
+                        <img src="{{$category->image_url}}"
                             alt="{{ $category->name }}"
                             class="w-full h-48 object-cover transition-transform duration-300 ease-in-out group-hover:scale-110">
                         <div
@@ -20,9 +20,10 @@
                         <div class="absolute inset-0 flex items-center justify-center">
                             <h3
                                 class="text-white text-lg font-bold group-hover:text-primary transition-colors duration-300">
-                                {{ $category->name }}</h3>
+                                {{ $category->name }}
+                            </h3>
                         </div>
-                    </div>
+                    </a>
                 @endforeach
             </div>
         </section>

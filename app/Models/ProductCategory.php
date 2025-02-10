@@ -21,8 +21,10 @@ class ProductCategory extends Model
         'meta_title',
         'meta_description',
         'meta_keywords',
+        'image',
     ];
 
+    protected $appends = ['image_url'];
     public function products()
     {
         return $this->hasMany(Product::class, 'category_id');
@@ -36,5 +38,13 @@ class ProductCategory extends Model
     public function getSlugAttribute()
     {
         return Str::slug($this->name);
+    }
+    /**
+     * Get the URL of the image.
+     * Defaults to a placeholder if no image is set.
+     */
+    public function getImageUrlAttribute()
+    {
+        return  $this->image ? url('/') . asset('storage/' . $this->image) : 'https://fastly.picsum.photos/id/160/200/200.jpg?hmac=0fql9ogVWlCf8ddvQCF-vGiiso9i0m0A68TP5De28tI';
     }
 }

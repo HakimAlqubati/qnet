@@ -18,6 +18,7 @@ use App\Http\Controllers\SitemapController;
 use App\Http\Controllers\SiteSettingController;
 use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\SubscriptionController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -68,7 +69,7 @@ Route::get('/orders', [OrderHistoryController::class, 'index'])->name('orders.hi
 Route::get('/orders/{id}', [OrderHistoryController::class, 'show'])->name('orders.show');
 
 Route::prefix('payment_methods')->group(function () {
-    Route::get('/', [PaymentMethodController::class,'index'])->name('payment_methods.index');
+    Route::get('/', [PaymentMethodController::class, 'index'])->name('payment_methods.index');
     Route::post('/store', [PaymentMethodController::class, 'addPaymentMethod'])->name('payment_methods.store');
     Route::get('/edit/{id}', [PaymentMethodController::class, 'editPaymentMethod'])->name('payment_methods.edit');
     Route::post('/update/{id}', [PaymentMethodController::class, 'editPaymentMethod'])->name('payment_methods.update');
@@ -132,7 +133,9 @@ Route::view('/about', 'about')->name('about');
 Route::view('/shop', 'shop')->name('shop');
 
 Route::view('/account', 'account')->middleware('auth')->name('about');
+Route::get('/register', [UserController::class, 'create']);
+Route::post('/users', [UserController::class, 'store'])->name('users.store');
 
 // Blog routes
 
-require __DIR__.'/socialstream.php';
+require __DIR__ . '/socialstream.php';

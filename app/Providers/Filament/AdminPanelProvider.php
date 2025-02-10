@@ -37,13 +37,17 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->brandName('QNET')
+            ->favicon(asset('storage/logo/logo.svg'))
+            ->brandLogo(asset('storage/logo/logo.svg'))
+            ->darkModeBrandLogo(asset('storage/logo/logo.svg'))
+            ->brandLogoHeight('1.5rem')
             ->login()
             // ->login([AuthenticatedSessionController::class, 'create'])
             // ->passwordReset()
             // ->emailVerification()
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->colors([
-                'primary' => Color::Yellow,
+                'primary' => Color::Orange,
             ])
             ->userMenuItems([
                 MenuItem::make()

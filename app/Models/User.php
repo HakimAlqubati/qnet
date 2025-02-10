@@ -68,6 +68,8 @@ class User extends Authenticatable implements HasDefaultTenant, HasTenants, Fila
         'country_id',
         'city_id',
         'rank_id',
+        'active',
+        'address'
     ];
 
     public const USER_TYPE_CUSTOMER = 'customer';
@@ -229,5 +231,16 @@ class User extends Authenticatable implements HasDefaultTenant, HasTenants, Fila
     public function rank(): BelongsTo
     {
         return $this->belongsTo(Rank::class);
+    }
+
+    public function userPlans(): HasMany
+    {
+        return $this->hasMany(UserPlan::class);
+    }
+
+    // Scope function to get only active users
+    public function scopeActive($query)
+    {
+        return $query->where('active', true);
     }
 }

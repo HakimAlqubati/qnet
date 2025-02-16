@@ -8,6 +8,7 @@ use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\Frontend\ProductCollectionController;
 use App\Http\Controllers\Frontend\ProductTagController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\OrderHistoryController;
 use App\Http\Controllers\PaymentMethodController;
@@ -124,7 +125,7 @@ Route::get('/site-settings/{id}/edit', [SiteSettingController::class, 'edit'])->
 Route::post('/site-settings/{id}', [SiteSettingController::class, 'update'])->name('site_settings.update');
 
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap.xml');
-
+    
 
 // Pages
 // TODO: implement CMS features for page and form editing 
@@ -137,5 +138,6 @@ Route::get('/register', [UserController::class, 'create']);
 Route::post('/users', [UserController::class, 'store'])->name('users.store');
 
 // Blog routes
+Route::get('/lang/{lang}', [LanguageController::class, 'switchLang'])->name('changeLang');
 
 require __DIR__ . '/socialstream.php';

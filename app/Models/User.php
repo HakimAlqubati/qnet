@@ -243,4 +243,14 @@ class User extends Authenticatable implements HasDefaultTenant, HasTenants, Fila
     {
         return $query->where('active', true);
     }
+
+    public function identity()
+    {
+        return $this->hasOne(UserIdentity::class);
+    }
+
+    public function address()
+{
+    return $this->hasOne(UserAddress::class);
+}
 }

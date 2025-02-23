@@ -134,7 +134,7 @@ Route::view('/about', 'about')->name('about');
 Route::view('/shop', 'shop')->name('shop');
 
 Route::view('/account', 'account')->middleware('auth')->name('about');
-Route::get('/register', [UserController::class, 'create']);
+// Route::get('/register', [UserController::class, 'create']);
 Route::post('/users', [UserController::class, 'store'])->name('users.store');
 
 // Blog routes

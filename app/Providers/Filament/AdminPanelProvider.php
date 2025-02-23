@@ -42,6 +42,10 @@ class AdminPanelProvider extends PanelProvider
             ->darkModeBrandLogo(asset('storage/logo/logo.svg'))
             ->brandLogoHeight('1.5rem')
             ->login()
+            ->registration(\App\Filament\Admin\Pages\Auth\Register::class) 
+            
+
+
             // ->login([AuthenticatedSessionController::class, 'create'])
             // ->passwordReset()
             // ->emailVerification()

@@ -7,6 +7,7 @@
     <title>QNET Dashboard - Bootstrap</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
     <style>
         body {
@@ -314,6 +315,11 @@
         .nav-item {
             margin-left: 15px;
         }
+
+        .social-icons i {
+            color: rgb(255 102 0);
+            font-size: 29px;
+        }
     </style>
 </head>
 
@@ -331,12 +337,15 @@
                 </div>
 
                 <div class="social-icons ms-3">
-                    <a href="#"><img src="https://cdn-icons-png.flaticon.com/24/174/174848.png"
-                            alt="YouTube"></a>
-                    <a href="#"><img src="https://cdn-icons-png.flaticon.com/24/733/733635.png"
-                            alt="Facebook"></a>
-                    <a href="#"><img src="https://cdn-icons-png.flaticon.com/24/733/733579.png"
-                            alt="Twitter"></a>
+                    <a href="https://www.youtube.com/subscription_center?add_user=qnetofficial">
+                        <i class=" fab fa-youtube"></i>
+                    </a>
+                    <a href="https://www.facebook.com/share/151BYK4ggx/">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a href="https://www.instagram.com/qnetofficial?igsh=MWY0OTZraGE5aWVvZg==">
+                        <i class="fab fa-instagram"></i>
+                    </a>
                 </div>
             </div>
 

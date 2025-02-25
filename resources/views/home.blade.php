@@ -320,6 +320,174 @@
             color: rgb(255 102 0);
             font-size: 29px;
         }
+
+        .card {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .card .btn {
+            margin-top: auto;
+            /* Ensures the button stays at the bottom */
+        }
+
+
+
+
+        .based_on_history_body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+            direction: ltr;
+        }
+
+        .based_on_history_body .table-container {
+            margin: 20px auto;
+            width: 50%;
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .based_on_history_body table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .based_on_history_body th,
+        .based_on_history_body td {
+            border: 1px solid #000;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .based_on_history_body th {
+            background-color: orange;
+        }
+
+        .based_on_history_body td:first-child {
+            width: 80px;
+            /* Adjust width of select column */
+        }
+
+        .based_on_history_body form {
+            margin: 20px;
+        }
+
+        .based_on_history_body input,
+        .based_on_history_body select {
+            padding: 5px;
+            font-size: 16px;
+        }
+
+        .based_on_history_body button {
+            padding: 6px 15px;
+            font-size: 16px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        .based_on_history_body button:hover {
+            background-color: #218838;
+        }
+
+
+        /** Swapper */
+        /* 🔹 Banner Swapper (Image Slider) */
+        /* 🔹 Fixed Swapper CSS */
+        /* 🔹 Banner Swapper (Fixed Image Slider) */
+        .slider {
+            position: relative;
+            width: 75%;
+            max-width: 800px;
+            /* Ensure a fixed max width */
+            border-radius: 10px;
+            overflow: hidden;
+            height: 300px;
+        }
+
+        /* 🔹 Ensure slides display correctly */
+        .slides {
+            display: flex;
+            width: 400%;
+            /* 4 slides (4 * 100%) */
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .slide {
+            width: 100%;
+            flex: 0 0 100%;
+            /* Each slide takes full container width */
+        }
+
+        /* 🔹 Ensure images fit correctly */
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* 🔹 Navigation Arrows */
+        .prev,
+        .next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            font-size: 20px;
+            border-radius: 50%;
+        }
+
+        .prev {
+            left: 10px;
+        }
+
+        .next {
+            right: 10px;
+        }
+
+        .prev:hover,
+        .next:hover {
+            background: black;
+        }
+
+        /* 🔹 Pagination Dots */
+        .pagination-container {
+            text-align: center;
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .dot {
+            height: 12px;
+            width: 12px;
+            margin: 5px;
+            background-color: #bbb;
+            border-radius: 50%;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .active,
+        .dot:hover {
+            background-color: #ff6600;
+        }
+
+
+        /** end Swapper */
     </style>
 </head>
 
@@ -408,19 +576,29 @@
 
 
             <!-- Banner Section -->
-            <div class="banner">
-                <img src="{{ url('/') . '/storage/logo/new-swapper.png' }}" alt="Jewelry Banner">
-                <!-- Pagination -->
+            <!-- 🔹 Banner Swapper (Fixed Image Slider) -->
+            <div class="slider">
+                <div class="slides">
+                    <div class="slide"><img src="https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U" alt="Image 1"></div>
+                    <div class="slide"><img src="https://fastly.picsum.photos/id/866/200/300.jpg?hmac=rcadCENKh4rD6MAp6V_ma-AyWv641M4iiOpe1RyFHeI" alt="Image 2"></div>
+                    <div class="slide"><img src="https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U" alt="Image 3"></div>
+                    <div class="slide"><img src="https://fastly.picsum.photos/id/866/200/300.jpg?hmac=rcadCENKh4rD6MAp6V_ma-AyWv641M4iiOpe1RyFHeI" alt="Image 4"></div>
+                </div>
+
+                <!-- Navigation Arrows -->
+                <button class="prev" onclick="moveSlide(-1)">&#10094;</button>
+                <button class="next" onclick="moveSlide(1)">&#10095;</button>
+
+                <!-- Pagination Dots -->
                 <div class="pagination-container">
-                    <span class="active">1</span>
-                    <span>2</span>
-                    <span>3</span>
-                    <span>4</span>
-                    <span>5</span>
-                    <span>6</span>
-                    <span>7</span>
+                    <span class="dot" onclick="currentSlide(1)"></span>
+                    <span class="dot" onclick="currentSlide(2)"></span>
+                    <span class="dot" onclick="currentSlide(3)"></span>
+                    <span class="dot" onclick="currentSlide(4)"></span>
                 </div>
             </div>
+
+
 
 
         </div>
@@ -487,6 +665,22 @@
             </div>
 
             <div id="history" class="tab-pane fade">
+                <div class="based_on_history_body">
+
+                    <form id="nameForm">
+                        <select id="sideSelect">
+                            <option value="L">L</option>
+                            <option value="R">R</option>
+                        </select>
+                        <input type="text" id="nameInput" placeholder="ادخل الاسم" required>
+                        <button type="submit">إضافة</button>
+                    </form>
+
+                    <div id="tablesContainer"></div> <!-- This will hold all generated tables -->
+
+
+
+                </div>
 
             </div>
 
@@ -553,19 +747,19 @@
         <div class="row">
             <!-- Right Sidebar -->
             <div class="col-lg-3">
-                <div class="card shadow-sm mb-3">
+                <div class="shadow-sm mb-3">
                     <img src="{{ url('/') . '/storage/logo/rsp_calc.png' }}" class="card-img-top"
                         alt="RSP Calculator">
                 </div>
-                <div class="card shadow-sm mb-3">
+                <div class="shadow-sm mb-3">
                     <img src="https://plus.unsplash.com/premium_photo-1683865776032-07bf70b0add1?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                         class="card-img-top" alt="Fast Start">
                 </div>
-                <div class="card shadow-sm mb-3">
+                <div class="shadow-sm mb-3">
                     <img src="https://plus.unsplash.com/premium_photo-1683865776032-07bf70b0add1?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                         class="card-img-top" alt="Weblearn">
                 </div>
-                <div class="card shadow-sm mb-3">
+                <div class="shadow-sm mb-3">
                     <img src="https://plus.unsplash.com/premium_photo-1683865776032-07bf70b0add1?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                         class="card-img-top" alt="Shop Now">
                 </div>
@@ -576,63 +770,93 @@
                 <!-- 🔹 Panels Section -->
                 <div class="row">
 
+                    <!-- 🔹 Commissions Panel (Right) -->
                     <div class="col-md-4">
-                        <div class="card shadow-sm p-3 h-100 d-flex flex-column">
-                            <h5 class="text-center text-warning">العمولات</h5>
-                            <select class="form-select mb-2">
-                                <option>52</option>
-                                <option>51</option>
-                            </select>
-                            <select class="form-select mb-2">
-                                <option>2023</option>
-                                <option>2022</option>
-                            </select>
-                            <button class="btn btn-warning w-100 mt-auto">إظهار</button>
+                        <div class="card p-3 shadow-sm text-center border rounded-3">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <h6 class="mb-0">💰 العمولات</h6>
+                                <img src="https://cdn-icons-png.flaticon.com/512/2698/2698259.png" alt="Coins Icon"
+                                    width="20">
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <label class="mb-0">الأسبوع:</label>
+                                <select class="form-select form-select-sm w-50">
+                                    <option>52</option>
+                                </select>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <label class="mb-0">السنة:</label>
+                                <select class="form-select form-select-sm w-50">
+                                    <option>2023</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-dark w-100 py-2">إظهار</button>
+                            <div class="p-2 mt-3 text-start border rounded bg-light">
+                                <p class="mb-0 text-muted" style="font-size: 12px;">
+                                    ✅ قد يتم تحصيل بعض المعاملات بناءً على سياسة التمويل المحلية.
+                                    🔹 تحقق من <a href="#" class="fw-bold text-primary">سجل</a> لمعرفة التفاصيل.
+                                    🔹 <a href="#" class="fw-bold text-primary">BV صـرفـة نقـاط</a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
 
-                            <p class="paragraph_in_panel">
-                                قد يتم تحصيل بعض المعاملات بناءً على أســاس جداول سياسة التمويل المحلية، تحقق من
-                                <a href="#">سجل</a>
-                                لمعرفة تفاصيل المعاملات، وأيضاً الاطلاع على تلك المعاملات
-                                <a href="#">BV صـرفـة نقـاط</a>
+
+
+
+
+
+
+                    <!-- 🔹 Your Current RSP Panel (Middle) -->
+                    <div class="col-md-4">
+                        <div class="card p-3 shadow-sm text-center border rounded-3">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <h6 class="mb-0">📊 Your Current RSP</h6>
+                                <img src="https://cdn-icons-png.flaticon.com/512/1698/1698535.png" alt="Icon"
+                                    width="20">
+                            </div>
+                            <hr>
+                            <p class="mb-3"><a href="#" class="fw-bold text-primary">انقر هنا للمشاهدة</a>
                             </p>
                         </div>
                     </div>
 
 
 
-
-
+                    <!-- 🔹 BV Counter Panel (Left) -->
                     <div class="col-md-4">
-                        <div class="card shadow-sm p-3 h-100 d-flex flex-column">
-                            <h5 class="text-warning text-center">Your Current RSP</h5>
-                            <p class="flex-grow-1 text-center"><a href="#">انقر هنا للمشاهدة</a></p>
-                        </div>
-                    </div>
+                        <div class="card p-3 shadow-sm text-center border rounded-3">
+                            <div class="d-flex align-items-center justify-content-between">
+                                <h6 class="mb-0">📊 عداد BV</h6>
 
-
-
-
-                    <div class="col-md-4">
-                        <div class="card shadow-sm p-3 h-100 d-flex flex-column">
-                            <h5 class="text-center text-warning mb-2">عداد BV</h5>
-                            <div class="d-flex align-items-center mb-2">
-                                <label class="me-2">أسبوع</label>
+                            </div>
+                            <hr>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <label class="mb-0">أسبوع:</label>
                                 <select class="form-select form-select-sm w-50">
                                     <option>1</option>
                                     <option>2</option>
-                                    <option>3</option>
                                 </select>
                             </div>
-                            <div class="d-flex align-items-center mb-2">
-                                <label class="me-2">سنة</label>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <label class="mb-0">سنة:</label>
                                 <select class="form-select form-select-sm w-50">
                                     <option>2024</option>
                                     <option>2023</option>
                                 </select>
                             </div>
-                            <button class="btn btn-dark w-75 mt-auto">إظهار</button>
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <label class="mb-0">TC:</label>
+                                <select class="form-select form-select-sm w-50">
+                                    <option>001</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-dark w-100 py-2">إظهار</button>
                         </div>
                     </div>
+
+
                 </div>
 
 
@@ -672,10 +896,167 @@
 
 
                 </div>
+                <div class="container mt-4">
+                    <img src="{{ url('/') . '/storage/logo/footer_image.jpg' }}" alt="Bottom Banner"
+                        class="img-fluid w-100 rounded shadow">
+                </div>
+
 
             </div> <!-- End of Left Section -->
         </div> <!-- End of Row -->
+        <div class="row">
+            {{-- FOOTER TOOLS  --}}
+            <!-- 🔹 Footer Tools Section -->
+            <div class="container mt-4">
+                <div class="row bg-light p-3 rounded shadow-sm text-center">
+
+                    <!-- Tool 1 -->
+                    <div class="col-md-2 col-4">
+                        <div class="d-flex flex-column align-items-center">
+                            <i class="fas fa-user-shield fa-2x text-warning"></i>
+                            <span class="mt-2">حماية الحساب</span>
+                        </div>
+                    </div>
+
+                    <!-- Tool 2 -->
+                    <div class="col-md-2 col-4">
+                        <div class="d-flex flex-column align-items-center">
+                            <i class="fas fa-users fa-2x text-primary"></i>
+                            <span class="mt-2">مركز الدعم الفوري</span>
+                        </div>
+                    </div>
+
+                    <!-- Tool 3 -->
+                    <div class="col-md-2 col-4">
+                        <div class="d-flex flex-column align-items-center">
+                            <i class="fas fa-file-alt fa-2x text-success"></i>
+                            <span class="mt-2">ملاحظات</span>
+                        </div>
+                    </div>
+
+                    <!-- Tool 4 -->
+                    <div class="col-md-2 col-4">
+                        <div class="d-flex flex-column align-items-center">
+                            <i class="fas fa-briefcase fa-2x text-danger"></i>
+                            <span class="mt-2">إدارة الأعمال</span>
+                        </div>
+                    </div>
+
+                    <!-- Tool 5 -->
+                    <div class="col-md-2 col-4">
+                        <div class="d-flex flex-column align-items-center">
+                            <i class="fas fa-globe fa-2x text-info"></i>
+                            <span class="mt-2">تسجيل ويب</span>
+                        </div>
+                    </div>
+
+                    <!-- Tool 6 -->
+                    <div class="col-md-2 col-4">
+                        <div class="d-flex flex-column align-items-center">
+                            <i class="fas fa-handshake fa-2x text-secondary"></i>
+                            <span class="mt-2">الأمان عبر الإنترنت</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
     </div> <!-- End of Container -->
+
+    <script>
+        document.getElementById('nameForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            let nameInput = document.getElementById('nameInput');
+            let sideSelect = document.getElementById('sideSelect');
+            let name = nameInput.value.trim();
+            let side = sideSelect.value;
+
+            if (name !== "") {
+                let tablesContainer = document.getElementById('tablesContainer');
+
+                // Create a container for the new table
+                let tableContainer = document.createElement('div');
+                tableContainer.classList.add('table-container');
+
+                // Create a new table
+                let newTable = document.createElement('table');
+                newTable.innerHTML = `
+                    <thead>
+                        <tr>
+                            <th> </th>
+                            <th>الاسم</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                `;
+
+                let tbody = newTable.querySelector('tbody');
+
+                // Add three rows with the same name
+                for (let i = 0; i < 3; i++) {
+                    let newRow = document.createElement('tr');
+                    newRow.innerHTML = `
+                        <td>
+                            <select>
+                                <option value="L" ${side === "L" ? "selected" : ""}>L</option>
+                                <option value="R" ${side === "R" ? "selected" : ""}>R</option>
+                            </select>
+                        </td>
+                        <td>${name}</td>
+                    `;
+                    tbody.appendChild(newRow);
+                }
+
+                // Add table to container and then to the main container
+                tableContainer.appendChild(newTable);
+                tablesContainer.appendChild(tableContainer);
+
+                nameInput.value = ""; // Clear input after submission
+            }
+        });
+    </script>
+
+    <script>
+        let slideIndex = 0;
+        const slidesContainer = document.querySelector(".slides");
+        const slides = document.querySelectorAll(".slide");
+        const dots = document.querySelectorAll(".dot");
+
+        function showSlide(index) {
+            if (index >= slides.length) {
+                slideIndex = 0;
+            } else if (index < 0) {
+                slideIndex = slides.length - 1;
+            } else {
+                slideIndex = index;
+            }
+
+            // Move the slides
+            slidesContainer.style.transform = `translateX(${-slideIndex * 100}%)`;
+
+            // Update active dot
+            dots.forEach(dot => dot.classList.remove("active"));
+            dots[slideIndex].classList.add("active");
+        }
+
+        function moveSlide(step) {
+            showSlide(slideIndex + step);
+        }
+
+        function currentSlide(index) {
+            showSlide(index - 1);
+        }
+
+        // Auto Slide
+        setInterval(() => moveSlide(1), 3000);
+
+        // Initialize
+        showSlide(slideIndex);
+    </script>
+
 
 </body>
 

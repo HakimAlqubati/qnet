@@ -250,7 +250,7 @@ class User extends Authenticatable implements HasDefaultTenant, HasTenants, Fila
     }
 
     public function address()
-{
-    return $this->hasOne(UserAddress::class);
-}
+    {
+        return $this->hasOne(UserAddress::class);
+    }
 }

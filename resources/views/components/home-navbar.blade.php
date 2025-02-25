@@ -48,7 +48,7 @@
 
                      <div
                          class="relative flex flex-wrap items-center gap-x-1.5 md:ps-2.5 mt-1 md:mt-0 md:ms-1.5 before:block before:absolute before:top-1/2 before:-start-px before:w-px before:h-4 before:bg-white/30 before:-translate-y-1/2">
-                         <a class="p-2 w-full flex items-center text-sm text-white/80 hover:text-white focus:outline-none focus:text-white"
+                         <a class="p-2 w-full flex items-center text-sm text-orange-500 hover:text-orange-600 focus:outline-none focus:text-orange-600"
                              href="#">
                              <svg class="shrink-0 size-4 me-3 md:me-2" xmlns="http://www.w3.org/2000/svg" fill="none"
                                  viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">

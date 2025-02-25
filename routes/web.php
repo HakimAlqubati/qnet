@@ -1,5 +1,7 @@
 <?php
 
+use App\Filament\Admin\Pages\Auth\Register;
+use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Frontend\ProductController;
 use App\Http\Controllers\Frontend\ProductCategoryController;
@@ -20,6 +22,7 @@ use App\Http\Controllers\SiteSettingController;
 use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\UserController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -125,7 +128,15 @@ Route::get('/site-settings/{id}/edit', [SiteSettingController::class, 'edit'])->
 Route::post('/site-settings/{id}', [SiteSettingController::class, 'update'])->name('site_settings.update');
 
 Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap.xml');
-    
+
+// Cart routes
+Route::prefix('cart')->group(function () {
+    Route::get('/', [CartController::class, 'index'])->name('cart.index');
+    Route::post('/add/{product}', [CartController::class, 'addToCart'])->name('cart.add');
+    Route::patch('/update/{cartItem}', [CartController::class, 'updateQuantity'])->name('cart.update');
+    Route::delete('/remove/{cartItem}', [CartController::class, 'removeFromCart'])->name('cart.remove');
+    Route::delete('/clear', [CartController::class, 'clearCart'])->name('cart.clear');
+});
 
 // Pages
 // TODO: implement CMS features for page and form editing 
@@ -134,7 +145,7 @@ Route::view('/about', 'about')->name('about');
 Route::view('/shop', 'shop')->name('shop');
 
 Route::view('/account', 'account')->middleware('auth')->name('about');
-// Route::get('/register', [UserController::class, 'create']);
+Route::get('/registeration',  Register::class)->name('registeration');
 Route::post('/users', [UserController::class, 'store'])->name('users.store');
 
 // Blog routes

@@ -11,6 +11,7 @@ use App\Http\Controllers\Frontend\ProductCollectionController;
 use App\Http\Controllers\Frontend\ProductTagController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LanguageController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\OrderHistoryController;
 use App\Http\Controllers\PaymentMethodController;
@@ -132,11 +133,16 @@ Route::get('/sitemap.xml', [SitemapController::class, 'index'])->name('sitemap.x
 // Cart routes
 Route::prefix('cart')->group(function () {
     Route::get('/', [CartController::class, 'index'])->name('cart.index');
-    Route::post('/add/{product}', [CartController::class, 'addToCart'])->name('cart.add');
+    // Route::post('/add/{product}', [CartController::class, 'addToCart'])->name('cart.add');
     Route::patch('/update/{cartItem}', [CartController::class, 'updateQuantity'])->name('cart.update');
-    Route::delete('/remove/{cartItem}', [CartController::class, 'removeFromCart'])->name('cart.remove');
+    // Route::delete('/remove/{cartItem}', [CartController::class, 'removeFromCart'])->name('cart.remove');
     Route::delete('/clear', [CartController::class, 'clearCart'])->name('cart.clear');
 });
+
+Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
+Route::delete('/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('cart.remove');
+
+Route::post('/order/store', [OrderController::class, 'store'])->name('order.store');
 
 // Pages
 // TODO: implement CMS features for page and form editing 

@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\App\Pages;
 use App\Filament\App\Pages\EditProfile;
+use App\Filament\Pages\CustomLogin;
 use App\Http\Middleware\TeamsPermission;
 use App\Models\Team;
 use Filament\Facades\Filament;
@@ -41,7 +42,7 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogo(asset('storage/logo/logo.svg'))
             ->darkModeBrandLogo(asset('storage/logo/logo.svg'))
             ->brandLogoHeight('1.5rem')
-            ->login()
+            ->login(CustomLogin::class)
             ->registration(\App\Filament\Admin\Pages\Auth\Register::class) 
             
 

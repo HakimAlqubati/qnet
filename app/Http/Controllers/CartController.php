@@ -9,70 +9,61 @@ use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
+
     public function index()
     {
-        $cartItems = CartItem::where('user_id', Auth::id())
-            ->with('product')
-            ->get();
+        $cartItems = auth()->check()
+            ? auth()->user()->cart()->with('product')->get() // Get cart items with product details
+            : collect(); // Return empty collection for guests
 
-        $total = $cartItems->sum(function ($item) {
-            return $item->quantity * $item->product->price;
-        });
-
-        return view('cart', compact('cartItems', 'total'));
+        return view('cart', compact('cartItems'));
     }
 
-    public function addToCart(Request $request, Product $product)
+    /**
+     * Add product to cart
+     */
+    public function addToCart(Request $request)
     {
         $request->validate([
-            'quantity' => 'required|integer|min:1'
+            'product_id' => 'required|exists:products,id'
         ]);
 
-        $cartItem = CartItem::updateOrCreate(
-            [
-                'user_id' => Auth::id(),
-                'product_id' => $product->id
-            ],
-            [
-                'quantity' => $request->quantity
-            ]
-        );
+        $product = Product::findOrFail($request->product_id);
 
-        return redirect()->route('cart.index')->with('success', 'Product added to cart successfully!');
-    }
-
-    public function updateQuantity(Request $request, CartItem $cartItem)
-    {
-        $request->validate([
-            'quantity' => 'required|integer|min:1'
-        ]);
-
-        if ($cartItem->user_id !== Auth::id()) {
-            abort(403);
+        if (!auth()->check()) {
+            return redirect()->back()->with('error', 'You must be logged in to add items to your cart.');
         }
 
-        $cartItem->update([
-            'quantity' => $request->quantity
-        ]);
+        $user = auth()->user();
 
-        return redirect()->route('cart.index')->with('success', 'Cart updated successfully!');
-    }
+        // Check if product already exists in cart
+        $cartItem = $user->cart()->where('product_id', $product->id)->first();
 
-    public function removeFromCart(CartItem $cartItem)
-    {
-        if ($cartItem->user_id !== Auth::id()) {
-            abort(403);
+        if ($cartItem) {
+            // Increment quantity if already in cart
+            $cartItem->increment('quantity');
+        } else {
+            // Add new cart item
+            CartItem::create([
+                'user_id' => $user->id,
+                'product_id' => $product->id,
+                'quantity' => 1,
+                'price' => $product->price,
+            ]);
         }
 
-        $cartItem->delete();
-
-        return redirect()->route('cart.index')->with('success', 'Item removed from cart successfully!');
+        return redirect()->back()->with('success', 'Product added to cart successfully!');
     }
 
-    public function clearCart()
-    {
-        CartItem::where('user_id', Auth::id())->delete();
 
-        return redirect()->route('cart.index')->with('success', 'Cart cleared successfully!');
+    public function removeFromCart($id)
+    {
+        $cartItem = CartItem::findOrFail($id);
+
+        if (auth()->id() === $cartItem->user_id) {
+            $cartItem->delete();
+        }
+
+        return redirect()->back()->with('success', 'Product removed from cart.');
     }
 }

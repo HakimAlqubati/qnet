@@ -23,7 +23,7 @@
 
         <div class="form-group">
             <label for="shipping_address">Shipping Address</label>
-            <textarea class="form-control" id="shipping_address" name="shipping_address" required>{{ $shippingAddress }}</textarea>
+            {{-- <textarea class="form-control" id="shipping_address" name="shipping_address" required>{{ $shippingAddress }}</textarea> --}}
             <small id="address-feedback" class="form-text text-muted"></small>
         </div>
 

@@ -69,7 +69,11 @@ class User extends Authenticatable implements HasDefaultTenant, HasTenants, Fila
         'city_id',
         'rank_id',
         'active',
-        'address'
+        'address',
+        'profile_photo_path',
+        'referral_number_1',
+        'referral_number_2',
+        'direction',
     ];
 
     public const USER_TYPE_CUSTOMER = 'customer';
@@ -252,5 +256,15 @@ class User extends Authenticatable implements HasDefaultTenant, HasTenants, Fila
     public function address()
     {
         return $this->hasOne(UserAddress::class);
+    }
+
+    public function cart()
+    {
+        return $this->hasMany(CartItem::class);
+    }
+
+    public function getCartCountAttribute()
+    {
+        return  $this->cart()->count() ?? 0;
     }
 }

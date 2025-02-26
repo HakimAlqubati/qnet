@@ -35,33 +35,33 @@
                     </p>
                 </div>
             </div>
-
             <div class="accordion">
-                <h3 onclick="toggleAccordion(this)">Wishlist & Cart</h3>
+                <h3 onclick="toggleAccordion(this)">Cart</h3>
                 <div class="accordion-content">
-                    @auth
-                        @if (auth()->user()->wishlist()->where('product_id', $product->id)->exists())
-                            <form action="{{ route('wishlist.remove', $product) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Remove from Wishlist</button>
-                            </form>
-                        @else
-                            <form action="" method="POST">
-                                @csrf
-                                <button type="submit" class="btn btn-primary">Add to Wishlist</button>
-                            </form>
-                        @endif
-                    @endauth
+                    @php
+                        $cartItem = auth()->check()
+                            ? \App\Models\CartItem::where('user_id', auth()->id())
+                                ->where('product_id', $product->id)
+                                ->exists()
+                            : \App\Models\CartItem::where('session_id', session()->getId())
+                                ->where('product_id', $product->id)
+                                ->exists();
+                    @endphp
 
-                    @if ($product->inventory_count > 0)
-                        <form action="{{ route('cart.add', $product) }}" method="POST">
+                    @if ($cartItem)
+                        <!-- Product is already in cart -->
+                        <button class="btn-in-cart" disabled>✅ In Cart</button>
+                    @else
+                        <!-- Add to Cart Form -->
+                        <form action="{{ route('cart.add') }}" method="POST" class="cart-form">
                             @csrf
-                            <button type="submit" class="btn btn-success">Add to Cart</button>
+                            <input type="hidden" name="product_id" value="{{ $product->id }}">
+                            <button type="submit" class="btn-cart">🛒 Add to Cart</button>
                         </form>
                     @endif
                 </div>
             </div>
+
 
             @if (isset($recommendations) && count($recommendations) > 0)
                 <div class="accordion">
@@ -108,11 +108,16 @@
         background-color: #1e3a34;
         color: white;
         padding: 50px;
+        align-items: center;
+        justify-content: center;
+        text-align: left;
+        position: relative;
     }
 
     @media (min-width: 992px) {
         .hero {
-            grid-template-columns: 1.2fr 1fr;
+            grid-template-columns: 1fr 1fr;
+            /* Two columns */
             height: 60vh;
         }
     }
@@ -121,6 +126,26 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
+        padding: 20px;
+    }
+
+    .hero-right {
+        /* display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden; */
+    }
+
+    /* Ensure the image fits properly */
+    .hero-right img {
+        height: 100%;
+        /* max-width: 100%; */
+        /* height: auto; */
+        /* max-height: 300px; */
+        /* Limit height */
+        /* object-fit: contain; */
+        /* Prevent cropping */
+        /* border-radius: 10px; */
     }
 
     .category {
@@ -141,11 +166,6 @@
         font-size: 18px;
         margin: 20px 0;
         color: #d3d3d3;
-    }
-
-    .hero-right img {
-        width: 100%;
-        object-fit: cover;
     }
 
     .section-container {
@@ -239,5 +259,43 @@
 
     .btn-view:hover {
         background-color: #145a40;
+    }
+
+    /* Floating "Add to Cart" Button */
+    .btn-cart {
+        position: relative;
+        padding: 12px 18px;
+        background-color: #ff6600;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 50px;
+        font-size: 16px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.3s ease, transform 0.2s ease-in-out;
+    }
+
+    .btn-cart i {
+        margin-right: 5px;
+    }
+
+    .btn-cart:hover {
+        background-color: #e65c00;
+        transform: scale(1.05);
+    }
+
+    /* Disabled Button for Out of Stock */
+    .btn-out-of-stock {
+        padding: 12px 18px;
+        background-color: #ccc;
+        color: white;
+        border: none;
+        cursor: not-allowed;
+        border-radius: 50px;
+        font-size: 16px;
+        font-weight: bold;
     }
 </style>

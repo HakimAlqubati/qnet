@@ -49,6 +49,8 @@
         .user-info {
             font-size: 14px;
             color: #444;
+            width: 40%;
+            text-align: left;
         }
 
         .user-info .last-login {
@@ -59,6 +61,24 @@
         .user-status td {
             font-size: 13px;
             padding: 2px 5px;
+        }
+
+        .user-status {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .user-status td {
+            font-size: 13px;
+            padding: 2px 5px;
+            border-top: 1px solid #ddd;
+            /* Keep top border */
+            border-bottom: 1px solid #ddd;
+            /* Keep bottom border */
+            border-left: none;
+            /* Remove left border */
+            border-right: none;
+            /* Remove right border */
         }
 
         .status-text {
@@ -498,6 +518,45 @@
         <div class="container d-flex justify-content-between align-items-center">
 
 
+            <!-- Left Section: Language Selector & Logout Button -->
+            <div class="d-flex align-items-center">
+                <button class="btn" style="background-color: orange; border: 1px solid orange;">
+                    <span style="color: white;"> {{ __('messages.logout') }}</span>
+                </button>
+                <select class="form-select me-2" style="background-color: white; border: 1px solid black;"
+                    onchange="window.location.href=this.value">
+                    <option value="{{ route('changeLang', 'ar') }}">🇸🇦 العربية</option>
+                    <option value="{{ route('changeLang', 'en') }}">🇺🇸 English</option>
+                </select>
+                
+            </div>
+
+
+
+
+            <!-- Middle Section: User Info -->
+            <div class="user-info text-left">
+                <p class="mb-0">
+                    {{-- {{ __('messages.welcome') }} --}}
+                    {{ 'مرحباً ' }}
+                    بك مجدداً! <strong>إكرم كريم حسين الطائي</strong></p>
+                <p class="last-login">آخر تسجيل للدخول: 04 JAN 2024 - 23:56 (HKST)</p>
+                <table class="table table-borderless user-status table-bordered">
+
+
+
+                    <tr>
+                        <td class="text-start">تصنيفك الحالي:</td>
+                        <td class="text-end"><span class="status-text">Silver Star</span></td>
+                    </tr>
+                    <tr>
+                        <td class="text-start">درجتك الحالي:</td>
+                        <td class="text-end"><span class="status-text">Silver Star</span></td>
+                    </tr>
+
+                </table>
+            </div>
+
             <!-- Right Section: Logo & Social Media -->
             <div class="align-items-center">
                 <div>
@@ -517,41 +576,12 @@
                 </div>
             </div>
 
-
-
-            <!-- Middle Section: User Info -->
-            <div class="user-info text-right">
-                <p class="mb-0">
-                    {{ __('messages.welcome') }}
-                    بك مجدداً! <strong>إكرم كريم حسين الطائي</strong></p>
-                <p class="last-login">آخر تسجيل للدخول: 04 JAN 2024 - 23:56 (HKST)</p>
-                <table class="table table-borderless user-status table-bordered">
-
-
-
-                    <tr>
-                        <td class="text-start">تصنيفك الحالي:</td>
-                        <td class="text-end"><span class="status-text">Silver Star</span></td>
-                    </tr>
-                    <tr>
-                        <td class="text-start">درجتك الحالي:</td>
-                        <td class="text-end"><span class="status-text">Silver Star</span></td>
-                    </tr>
-
-                </table>
-            </div>
-            <!-- Left Section: Language Selector & Logout Button -->
-            <div class="d-flex align-items-center">
-                <a href="{{ route('changeLang', 'ar') }}" class="btn btn-orange me-2">🇸🇦 العربية</a>
-                <a href="{{ route('changeLang', 'en') }}" class="btn btn-orange me-2">🇺🇸 English</a>
-                <button class="btn btn-orange">{{ __('messages.logout') }}</button>
-            </div>
         </div>
     </header>
 
     <!-- 🔹 Navigation Bar -->
     <nav class="top-nav text-center">
-        <a href="#">مركز الإشعارات</a>
+        <a href="#">مركز التعليمات</a>
         <a href="#">حجم المبيعات - GR</a>
         <a href="#">حساب RSP</a>
         <a href="#">فحص النقاط الإلكترونية</a>
@@ -579,10 +609,18 @@
             <!-- 🔹 Banner Swapper (Fixed Image Slider) -->
             <div class="slider">
                 <div class="slides">
-                    <div class="slide"><img src="https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U" alt="Image 1"></div>
-                    <div class="slide"><img src="https://fastly.picsum.photos/id/866/200/300.jpg?hmac=rcadCENKh4rD6MAp6V_ma-AyWv641M4iiOpe1RyFHeI" alt="Image 2"></div>
-                    <div class="slide"><img src="https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U" alt="Image 3"></div>
-                    <div class="slide"><img src="https://fastly.picsum.photos/id/866/200/300.jpg?hmac=rcadCENKh4rD6MAp6V_ma-AyWv641M4iiOpe1RyFHeI" alt="Image 4"></div>
+                    <div class="slide"><img
+                            src="https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U"
+                            alt="Image 1"></div>
+                    <div class="slide"><img
+                            src="https://fastly.picsum.photos/id/866/200/300.jpg?hmac=rcadCENKh4rD6MAp6V_ma-AyWv641M4iiOpe1RyFHeI"
+                            alt="Image 2"></div>
+                    <div class="slide"><img
+                            src="https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U"
+                            alt="Image 3"></div>
+                    <div class="slide"><img
+                            src="https://fastly.picsum.photos/id/866/200/300.jpg?hmac=rcadCENKh4rD6MAp6V_ma-AyWv641M4iiOpe1RyFHeI"
+                            alt="Image 4"></div>
                 </div>
 
                 <!-- Navigation Arrows -->
@@ -638,7 +676,7 @@
                 <a class="nav-link" data-bs-toggle="tab" href="#ecard">
                     <span class="icon">💬</span>
                     <span>
-                        ملخص البطاقة الإلكترونية
+                        مدقق البطاقة الإلكترونية
                     </span>
                 </a>
             </li>
@@ -689,9 +727,48 @@
             </div>
 
             <div id="ecard" class="tab-pane fade">
-
+                <div class="based_on_history_body">
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                           <th colspan="100%">.</th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                                <tr>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-
             <div id="network" class="tab-pane fade">
 
             </div>
@@ -877,16 +954,19 @@
                                 <thead class="table-warning">
                                     <tr>
                                         <th>رقم العضوية</th>
+                                        <th>الاسم</th>
                                         <th>الدولة</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
                                         <td>HN747647</td>
+                                        <td>محمد حامد</td>
                                         <td>Kurdistan - region of Iraq</td>
                                     </tr>
                                     <tr>
                                         <td>HN739813</td>
+                                        <td>محمد حامد</td>
                                         <td>Kurdistan - region of Iraq</td>
                                     </tr>
                                 </tbody>
@@ -908,13 +988,13 @@
             {{-- FOOTER TOOLS  --}}
             <!-- 🔹 Footer Tools Section -->
             <div class="container mt-4">
-                <div class="row bg-light p-3 rounded shadow-sm text-center">
+                <div class="row bg-dark p-3 rounded shadow-sm text-center">
 
                     <!-- Tool 1 -->
                     <div class="col-md-2 col-4">
                         <div class="d-flex flex-column align-items-center">
                             <i class="fas fa-user-shield fa-2x text-warning"></i>
-                            <span class="mt-2">حماية الحساب</span>
+                            <span class="mt-2 text-white">حماية الحساب</span>
                         </div>
                     </div>
 
@@ -922,7 +1002,7 @@
                     <div class="col-md-2 col-4">
                         <div class="d-flex flex-column align-items-center">
                             <i class="fas fa-users fa-2x text-primary"></i>
-                            <span class="mt-2">مركز الدعم الفوري</span>
+                            <span class="mt-2 text-white">مركز الدعم الفوري</span>
                         </div>
                     </div>
 
@@ -930,7 +1010,7 @@
                     <div class="col-md-2 col-4">
                         <div class="d-flex flex-column align-items-center">
                             <i class="fas fa-file-alt fa-2x text-success"></i>
-                            <span class="mt-2">ملاحظات</span>
+                            <span class="mt-2 text-white">ملاحظات</span>
                         </div>
                     </div>
 
@@ -938,7 +1018,7 @@
                     <div class="col-md-2 col-4">
                         <div class="d-flex flex-column align-items-center">
                             <i class="fas fa-briefcase fa-2x text-danger"></i>
-                            <span class="mt-2">إدارة الأعمال</span>
+                            <span class="mt-2 text-white">إدارة الأعمال</span>
                         </div>
                     </div>
 
@@ -946,7 +1026,7 @@
                     <div class="col-md-2 col-4">
                         <div class="d-flex flex-column align-items-center">
                             <i class="fas fa-globe fa-2x text-info"></i>
-                            <span class="mt-2">تسجيل ويب</span>
+                            <span class="mt-2 text-white">تسجيل ويب</span>
                         </div>
                     </div>
 
@@ -954,7 +1034,7 @@
                     <div class="col-md-2 col-4">
                         <div class="d-flex flex-column align-items-center">
                             <i class="fas fa-handshake fa-2x text-secondary"></i>
-                            <span class="mt-2">الأمان عبر الإنترنت</span>
+                            <span class="mt-2 text-white">الأمان عبر الإنترنت</span>
                         </div>
                     </div>
 

@@ -35,11 +35,11 @@ class CheckoutController extends Controller
                 ->with('error', 'Your cart is empty');
         }
 
-        $shippingMethods = $this->shippingService->getAvailableShippingMethods();
+        // $shippingMethods = $this->shippingService->getAvailableShippingMethods();
 
         return view('checkout.checkout', [
             'cart' => $cart,
-            'shippingMethods' => $shippingMethods,
+            'shippingMethods' => [],
             'isGuest' => $isGuest
         ]);
     }

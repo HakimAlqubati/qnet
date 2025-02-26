@@ -1,196 +1,103 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h1 class="text-4xl font-bold text-gray-900 mb-10">Shopping Cart</h1>
-        <div class="flex flex-col lg:flex-row gap-10">
-            <!-- Cart Items -->
-            <div class="lg:w-2/3">
-                <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
-                    <div class="p-8 space-y-8">
-                        @forelse ($cartItems as $item)
-                            <div class="cart-item flex items-center justify-between border-b pb-8 last:border-b-0 last:pb-0">
-                                <div class="flex items-center space-x-8">
-                                    <img src="{{ $item->product->featured_image }}" alt="{{ $item->product->name }}"
-                                        class="w-32 h-32 object-cover rounded-xl shadow-md hover:shadow-lg transition-all duration-300">
-                                    <div>
-                                        <h3 class="text-2xl font-semibold text-gray-900 mb-3">{{ $item->product->name }}
-                                        </h3>
-                                        <p class="text-base text-gray-600">{{ $item->product->short_description }}</p>
-                                    </div>
-                                </div>
-                                <div class="flex items-center space-x-8">
-                                    <div class="flex items-center border-2 rounded-lg shadow-sm">
-                                        <button class="quantity-button p-3 hover:bg-gray-100"
-                                            onclick="updateQuantity({{ $item->id }}, 'decrease')">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M20 12H4"></path>
-                                            </svg>
-                                        </button>
-                                        <input type="number" value="{{ $item->quantity }}"
-                                            class="quantity-input w-20 text-center border-x-2 py-3 font-medium text-lg"
-                                            min="1" readonly>
-                                        <button class="quantity-button p-3 hover:bg-gray-100"
-                                            onclick="updateQuantity({{ $item->id }}, 'increase')">
-                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                    d="M12 4v16m8-8H4"></path>
-                                            </svg>
-                                        </button>
-                                    </div>
-                                    <p class="text-2xl font-bold text-gray-900">
-                                        ${{ number_format($item->product->price * $item->quantity, 2) }}</p>
-                                    <button
-                                        class="delete-button text-red-500 hover:text-red-700 p-3 rounded-full hover:bg-red-50"
-                                        onclick="removeItem({{ $item->id }})">
-                                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
-                                            </path>
-                                        </svg>
-                                    </button>
-                                </div>
+
+    <div class="container mx-auto px-4 py-6">
+        <!-- Header Section -->
+        <h2 class="text-2xl font-semibold mb-4">Your Shopping Cart</h2>
+
+        <!-- Cart Listing -->
+        <div class="space-y-4">
+            @if ($cartItems->count() > 0)
+                @foreach ($cartItems as $item)
+                    <div class="bg-white shadow-md rounded-lg p-4 flex flex-col md:flex-row items-center md:items-start">
+                        <!-- Product Image -->
+                        <div class="w-full md:w-1/4">
+                            <img style="max-width: 40%;"
+                                src="{{ $item->product->imageUrl ?? 'https://via.placeholder.com/150' }}"
+                                alt="{{ $item->product->name }}" class="w-full rounded-lg object-cover">
+                        </div>
+
+                        <!-- Product Details -->
+                        <div class="w-full md:w-3/4 px-4 flex flex-col justify-between">
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900">{{ $item->product->name }}</h3>
+                                <p class="text-xl font-bold text-orange-500">USD {{ number_format($item->price, 2) }}</p>
+                                <p class="text-sm text-gray-600">Quantity: {{ $item->quantity }}</p>
                             </div>
-                        @empty
-                            <div class="text-center py-16">
-                                <svg class="mx-auto h-20 w-20 text-gray-400" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
-                                </svg>
-                                <h3 class="mt-6 text-xl font-medium text-gray-900">Your cart is empty</h3>
-                                <p class="mt-3 text-gray-500">Start shopping to add items to your cart.</p>
-                                <div class="mt-10">
-                                    <a href="{{ route('shop') }}"
-                                        class="inline-flex items-center px-8 py-4 text-lg font-medium rounded-xl shadow-md text-white bg-orange-600 hover:bg-orange-700 transform hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500">
-                                        Continue Shopping
-                                    </a>
-                                </div>
-                            </div>
-                        @endforelse
-                    </div>
-                </div>
-            </div>
-            <!-- Order Summary -->
-            <div class="lg:w-1/3">
-                <div class="cart-summary bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300">
-                    <div class="p-10">
-                        <h2 class="text-3xl font-bold text-gray-900 mb-8">Order Summary</h2>
-                        <div class="space-y-8">
-                            <div class="flex justify-between items-center">
-                                <p class="text-xl text-gray-600">Subtotal</p>
-                                <p class="text-xl font-semibold text-gray-900">${{ number_format($total, 2) }}</p>
-                            </div>
-                            <div class="flex justify-between items-center">
-                                <p class="text-xl text-gray-600">Shipping</p>
-                                <p class="text-xl font-semibold text-gray-900">Calculated at checkout</p>
-                            </div>
-                            <div class="border-t-2 pt-8">
-                                <div class="flex justify-between items-center">
-                                    <p class="text-2xl font-bold text-gray-900">Total</p>
-                                    <p class="text-2xl font-bold text-gray-900">${{ number_format($total, 2) }}</p>
-                                </div>
-                            </div>
+
+                            <!-- Remove from Cart -->
+                            <form action="{{ route('cart.remove', $item->id) }}" method="POST" class="mt-2">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-red-500 text-sm hover:underline">Remove</button>
+                            </form>
                         </div>
                     </div>
+                @endforeach
+
+                <!-- Order Form -->
+                <div class="bg-white shadow-md rounded-lg p-6 mt-6">
+                    <h3 class="text-xl font-semibold mb-4">Checkout</h3>
+                    <form action="{{ route('order.store') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="customer_id" value="{{ auth()->id() }}">
+                        <input type="hidden" name="customer_email" value="{{ auth()->user()->email }}">
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block font-medium text-gray-700">Full Name</label>
+                                <input type="text" value="{{ auth()->user()->name }}" disabled
+                                    class="w-full p-2 border rounded-md bg-gray-100">
+                            </div>
+                            <div>
+                                <label class="block font-medium text-gray-700">Email</label>
+                                <input type="email" value="{{ auth()->user()->email }}" disabled
+                                    class="w-full p-2 border rounded-md bg-gray-100">
+                            </div>
+                        </div>
+
+                        <button type="submit"
+                            class="w-full bg-orange-500 text-white py-2 rounded-md mt-4 hover:bg-orange-600">
+                            Place Order
+                        </button>
+                    </form>
                 </div>
-            </div>
+            @else
+                <p class="text-center text-gray-500">Your cart is empty.</p>
+            @endif
         </div>
     </div>
+
 @endsection
-@push('styles')
-    <style>
-        .cart-item {
-            transition: all 0.4s ease-in-out;
-            padding: 1.5rem;
-            border-radius: 1rem;
-        }
 
-        .cart-item:hover {
-            transform: translateY(-4px);
-            background-color: rgba(249, 250, 251, 0.8);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
-        }
+<style>
+    /* Container */
+    .container {
+        max-width: 1100px;
+    }
 
-        .quantity-input::-webkit-inner-spin-button,
-        .quantity-input::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
+    /* Cart Items */
+    .bg-white {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: box-shadow 0.3s ease-in-out;
+    }
 
-        .quantity-input {
-            -moz-appearance: textfield;
-        }
+    .bg-white:hover {
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
 
-        .quantity-button {
-            transition: all 0.3s ease;
-        }
+    /* Product Image */
 
-        .quantity-button:active {
-            transform: scale(0.9);
-        }
 
-        .delete-button {
-            transition: all 0.3s ease;
-        }
+    /* Remove Button */
+    button.text-red-500 {
+        transition: color 0.3s ease-in-out;
+    }
 
-        .delete-button:hover {
-            transform: rotate(8deg);
-        }
-
-        .cart-summary {
-            position: sticky;
-            top: 2rem;
-            z-index: 10;
-        }
-
-        @media (max-width: 1024px) {
-            .cart-summary {
-                position: static;
-                margin-top: 2rem;
-            }
-        }
-    </style>
-@endpush
-@push('scripts')
-    <script>
-        function updateQuantity(itemId, action) {
-            fetch(`/cart/update/${itemId}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                    },
-                    body: JSON.stringify({
-                        action: action
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        window.location.reload();
-                    }
-                })
-                .catch(error => console.error('Error:', error));
-        }
-
-        function removeItem(itemId) {
-            if (confirm('Are you sure you want to remove this item from your cart?')) {
-                fetch(`/cart/remove/${itemId}`, {
-                        method: 'DELETE',
-                        headers: {
-                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            window.location.reload();
-                        }
-                    })
-                    .catch(error => console.error('Error:', error));
-            }
-        }
-    </script>
-@endpush
+    button.text-red-500:hover {
+        color: darkred;
+    }
+</style>

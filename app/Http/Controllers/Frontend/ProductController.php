@@ -42,25 +42,6 @@ class ProductController extends Controller
 
     public function show(Product $product)
     {
-        // // Track browsing history
-        // if (auth()->check()) {
-        //     BrowsingHistory::create([
-        //         'user_id' => auth()->id(),
-        //         'product_id' => $product->id,
-        //     ]);
-        // }
-
-        // // Get recommendations
-        // $recommendations = [];
-        // if (auth()->check()) {
-        //     $recommendations = $this->recommendationService->getRecommendations(auth()->user());
-        // }
-
-        // $metaTitle = $product->meta_title ?? $product->name;
-        // $metaDescription = $product->meta_description ?? $product->short_description;
-        // $metaKeywords = $product->meta_keywords;
-        // $canonicalUrl = route('products.show', ['category' => $category, 'product' => $product->slug]);
-
         return view('products.show', compact('product'));
     }
 

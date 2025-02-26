@@ -56,8 +56,7 @@ class Register extends BaseRegister
                                         ->required(),
                                     TextInput::make('phonenumber')
                                         ->label('Phone number')
-                                        ->email()
-                                        ->unique(User::class, 'email')
+                                        ->unique(User::class, 'phonenumber')
                                         ->required(),
                                     TextInput::make('password')
                                         ->label('Password')
@@ -85,26 +84,50 @@ class Register extends BaseRegister
 
                                     Select::make('country_id')
                                         ->label('Country')
-                                        // ->relationship('country', 'name')
+                                        ->live()
+                                        ->options(\App\Models\Country::pluck('name', 'id')) // ✅ Correct usage
                                         ->required(),
 
                                     Select::make('city_id')
                                         ->label('City')
-                                        // ->relationship('city', 'name')
+                                        ->live()
+                                        ->options(fn($get) => \App\Models\City::where('country_id', $get('country_id'))->pluck('name', 'id'))
                                         ->required(),
 
                                     Select::make('district_id')
                                         ->label('District')
-                                        // ->relationship('district', 'name'),
+                                        ->options(fn($get) => \App\Models\District::where('city_id', $get('city_id'))->pluck('name', 'id'))
                                 ]),
 
 
                             Step::make('Profile Picture (Optional)')
                                 ->schema([
-                                    \Filament\Forms\Components\FileUpload::make('profile_photo')
+                                    \Filament\Forms\Components\FileUpload::make('profile_photo_path')
                                         ->label('Upload Profile Picture')
                                         ->image()
                                         ->directory('profile-photos'),
+                                ]),
+
+                            // ✅ Added Fourth Step (Referral Information)
+                            Step::make('Referral Information')
+                                ->schema([
+                                    TextInput::make('referral_number_1')
+                                        ->label('Referral Number 1')
+                                        ->numeric()
+                                        ->nullable(),
+
+                                    TextInput::make('referral_number_2')
+                                        ->label('Referral Number 2')
+                                        ->numeric()
+                                        ->nullable(),
+
+                                    Select::make('direction')
+                                        ->label('Direction')
+                                        ->options([
+                                            'R' => 'Right',
+                                            'L' => 'Left',
+                                        ])
+                                        ->required(),
                                 ]),
                         ])->skippable()->columnSpanFull()
                     ])
@@ -116,12 +139,38 @@ class Register extends BaseRegister
 
     protected function handleRegistration(array $data): User
     {
+        // Create the user
+        $user = User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'phonenumber' => $data['phonenumber'],
+            'password' => Hash::make($data['password']), // Hash password
+            'country_id' => $data['country_id'],
+            'city_id' => $data['city_id'],
+            'referral_number_1' => $data['referral_number_1'],
+            'referral_number_2' => $data['referral_number_2'],
+            'direction' => $data['direction'],
+            'profile_photo_path' => $data['profile_photo_path'] ?? null, // Profile photo if uploaded
+        ]);
 
-        dd('d');
-        // return User::create([
-        //     'name' => $data['name'],
-        //     'email' => $data['email'],
-        //     'password' => bcrypt($data['password']),
-        // ]);
+        // Save user address in a separate table (UserAddress)
+        if (!empty($data['address1']) || !empty($data['address2'])) {
+            $user->address()->create([
+                'address1' => $data['address1'],
+                'address2' => $data['address2'] ?? null,
+                'city_id' => $data['city_id'],
+                'district_id' => $data['district_id'] ?? null,
+            ]);
+        }
+
+        // Log in the new user
+        auth()->login($user);
+
+        // Redirect to dashboard
+        return $user;
+    }
+    protected function redirectPath(): string
+    {
+        return route('dashboard'); // Change this to your desired route
     }
 }

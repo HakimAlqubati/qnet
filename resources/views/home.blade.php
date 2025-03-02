@@ -507,7 +507,93 @@
         }
 
 
+        .table-responsive {
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
         /** end Swapper */
+
+        .top-nav {
+            display: flex;
+            overflow-x: auto;
+            white-space: nowrap;
+            padding-bottom: 5px;
+        }
+
+        .top-nav a {
+            flex-shrink: 0;
+        }
+
+
+        @media (max-width: 768px) {
+            .header-container .container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .social-icons {
+                margin-top: 10px;
+            }
+
+            .user-info {
+                width: 100%;
+                text-align: center;
+            }
+
+            .slider {
+                width: 100%;
+                height: 200px;
+            }
+
+            .slide img {
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+
+        /* 📌 Apply mobile styles **only** if absolutely necessary */
+        @media (max-width: 576px) {
+            .container {
+                max-width: 100%;
+                padding: 0 10px;
+            }
+
+            /* Stack header elements in mobile */
+            .header-container .container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .user-info {
+                width: 100%;
+                text-align: center;
+            }
+
+            .social-icons {
+                margin-top: 10px;
+            }
+
+            /* Stack banner items in mobile */
+            .banner-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .announcement {
+                width: 100%;
+            }
+
+            .slider {
+                width: 100%;
+                height: 200px;
+            }
+
+            .footer-tools .col-md-2 {
+                width: 50%;
+                margin-bottom: 10px;
+            }
+        }
     </style>
 </head>
 
@@ -528,7 +614,7 @@
                     <option value="{{ route('changeLang', 'ar') }}">🇸🇦 العربية</option>
                     <option value="{{ route('changeLang', 'en') }}">🇺🇸 English</option>
                 </select>
-                
+
             </div>
 
 
@@ -731,7 +817,7 @@
                     <div class="table-container">
                         <table>
                             <thead>
-                           <th colspan="100%">.</th>
+                                <th colspan="100%">.</th>
                             </thead>
                             <tbody>
                                 <tr>
@@ -948,7 +1034,7 @@
                         </div>
                     </div>
                     <div class="col-md-8">
-                        <div class="card shadow-sm p-3">
+                        <div class="card shadow-sm p-3 table-responsive">
                             <h5 class="text-warning">أعضاء جدد بشبكتي</h5>
                             <table class="table table-bordered">
                                 <thead class="table-warning">

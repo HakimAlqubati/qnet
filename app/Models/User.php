@@ -74,7 +74,20 @@ class User extends Authenticatable implements HasDefaultTenant, HasTenants, Fila
         'referral_number_1',
         'referral_number_2',
         'direction',
+        'rank_team_id',
+        'code_q',
+        'identify_id',
     ];
+
+    public function salaryRank(): BelongsTo
+    {
+        return $this->belongsTo(Rank::class, 'rank_id')->where('type', 'salary');
+    }
+
+    public function teamRank(): BelongsTo
+    {
+        return $this->belongsTo(Rank::class, 'rank_team_id');
+    }
 
     public const USER_TYPE_CUSTOMER = 'customer';
     public const USER_TYPE_ADMIN = 'admin';
@@ -181,9 +194,32 @@ class User extends Authenticatable implements HasDefaultTenant, HasTenants, Fila
     public function currentBV(): Attribute
     {
         return Attribute::get(function () {
-            return $this->bvHistory->sum(function ($bvEntry) {
-                return $bvEntry->direction === 'in' ? $bvEntry->bv_value : -$bvEntry->bv_value;
-            });
+            return $this->bvHistory
+                // ->where('direction', 'R')
+                ->sum(function ($bvEntry) {
+                    return $bvEntry->bv_value;
+                });
+        });
+    }
+    public function currentRightBV(): Attribute
+    {
+        return Attribute::get(function () {
+            return $this->bvHistory
+                ->where('direction', BVHistory::DIRECTION_IN)
+                ->sum(function ($bvEntry) {
+                    return $bvEntry->bv_value;
+                });
+        });
+    }
+
+    public function currentLeftBV(): Attribute
+    {
+        return Attribute::get(function () {
+            return $this->bvHistory
+                ->where('direction', BVHistory::DIRECTION_OUT)
+                ->sum(function ($bvEntry) {
+                    return $bvEntry->bv_value;
+                });
         });
     }
     public function currentRSP(): Attribute
@@ -266,5 +302,63 @@ class User extends Authenticatable implements HasDefaultTenant, HasTenants, Fila
     public function getCartCountAttribute()
     {
         return  $this->cart()->count() ?? 0;
+    }
+
+
+    // 🔹 Define Direction Constants
+    public const DIRECTION_RIGHT = 'R';
+    public const DIRECTION_LEFT = 'L';
+
+    // 🔹 Get Direction Labels
+    public static function getDirectionLabels(): array
+    {
+        return [
+            self::DIRECTION_RIGHT => __('Right (R)'),
+            self::DIRECTION_LEFT => __('Left (L)'),
+        ];
+    }
+
+    // 🔹 Scope to Filter Users by Direction
+    public function scopeDirection($query, string $direction)
+    {
+        return $query->where('direction', $direction);
+    }
+
+    // 🔹 Get Badge Color for Direction (Optional for UI)
+    public static function getDirectionBadgeColor(string $direction): string
+    {
+        return match ($direction) {
+            self::DIRECTION_RIGHT => 'success', // Green for Right
+            self::DIRECTION_LEFT => 'warning', // Yellow for Left
+            default => 'gray',
+        };
+    }
+
+    // 🔹 Accessor to Get Readable Direction Label
+    public function getDirectionLabelAttribute(): string
+    {
+        return self::getDirectionLabels()[$this->direction] ?? __('Unknown');
+    }
+    public function getBVHistoryByYearWeek($year, $week = null)
+    {
+        $query = $this->bvHistory()
+            ->selectRaw(
+                'bv_value, YEAR(created_at) as year, WEEK(created_at, 1) as week,
+                SUM(CASE WHEN direction = ? THEN bv_value ELSE 0 END) as left_bv,
+                SUM(CASE WHEN direction = ? THEN bv_value ELSE 0 END) as right_bv',
+                [BVHistory::DIRECTION_OUT, BVHistory::DIRECTION_IN]
+            )
+            ->whereYear('created_at', $year);
+
+        if ($week !== null) {
+            $query->whereRaw('WEEK(created_at, 1) = ?', [$week]);
+        }
+
+        return $query
+            ->groupBy('year', 'week','bv_value')
+            ->orderBy('created_at')
+            ->get()
+            ->groupBy(['year', 'week','id'])
+            ;
     }
 }

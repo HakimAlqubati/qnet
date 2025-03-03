@@ -42,7 +42,7 @@ class AppPanelProvider extends PanelProvider
             ->id('app')
             ->path('app')
             ->brandName('QNET')
-            // ->login([AuthenticatedSessionController::class, 'create'])
+            ->login([AuthenticatedSessionController::class, 'create'])
             // ->registration()
             // ->passwordReset()
             // ->emailVerification()

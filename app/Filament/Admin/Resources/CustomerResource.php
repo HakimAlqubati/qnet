@@ -5,9 +5,11 @@ namespace App\Filament\Admin\Resources;
 use App\Filament\Admin\Resources\CustomerResource\Pages\CreateCustomer;
 use App\Filament\Admin\Resources\CustomerResource\Pages\EditCustomer;
 use App\Filament\Admin\Resources\CustomerResource\Pages\ListCustomers;
+use App\Filament\Admin\Resources\CustomerResource\RelationManagers\BvHistoryRelationManager;
 use App\Filament\Admin\Resources\UserResource\Pages;
 use App\Filament\Admin\Resources\UserResource\RelationManagers;
 use App\Models\BVHistory;
+use App\Models\Rank;
 use App\Models\User;
 
 use Filament\Forms;
@@ -68,7 +70,7 @@ class CustomerResource extends Resource
                         Forms\Components\FileUpload::make('profile_photo_path')
                             ->image()->columnSpanFull()
                             ->label("Image"),
-                        Grid::make()->columns(3)->schema([
+                        Grid::make()->columns(4)->schema([
                             Select::make('country_id')
                                 ->label('Country')
                                 ->relationship('country', 'name')
@@ -82,11 +84,26 @@ class CustomerResource extends Resource
                                 ->placeholder('Select City'),
 
                             Select::make('rank_id')
-                                ->label('Rank')
-                                ->relationship('rank', 'name')
-                                ->placeholder('Select Rank')
+                                ->label('Salary Rank')
+                                ->options(
+                                    Rank::query()
+                                        ->where('type', 'salary')
+                                        ->pluck('name', 'id')
+                                )
+                                ->placeholder('Select')
+                                ->preload(),
+
+                            Select::make('rank_team_id')
+                                ->label('Team Rank')
+                                ->options(
+                                    Rank::query()
+                                        ->where('type', Rank::TYPE_TEAM)
+                                        ->pluck('name', 'id')
+                                )
+                                ->placeholder('Select')
                                 ->preload(),
                         ]),
+
                         Grid::make()->columns(2)->hidden()->schema([
                             TextInput::make('password')
                                 ->password()
@@ -100,6 +117,17 @@ class CustomerResource extends Resource
                                 ->required(fn(string $context) => $context === 'create')
                                 ->same('password')
                                 ->label('Confirm Password'),
+                        ]),
+                        Grid::make()->columns(2)->schema([
+                            TextInput::make('identify_id')
+                                ->prefixIcon('heroicon-m-lock-closed')
+                                ->prefixIconColor(Color::Orange)
+                                ->label('ID')
+                                ,
+                            TextInput::make('code_q')
+
+                                ->prefixIcon('heroicon-m-check')->prefixIconColor(Color::Orange)
+                                ->label('Q Code'),
                         ]),
 
 
@@ -133,7 +161,8 @@ class CustomerResource extends Resource
                     ->color('primary')
                     ->weight(FontWeight::Bold),
                 TextColumn::make('childrenCount')->label('Persons Under')->toggleable()->alignCenter(true),
-                TextColumn::make('currentBV')->label('Current BV')->toggleable()->alignCenter(true),
+                // TextColumn::make('currentRightBV')->label('Right BV')
+                //     ->toggleable()->alignCenter(true),
                 TextColumn::make('currentRSP')->label('Current RSP')->toggleable()->alignCenter(true),
                 Tables\Columns\TextColumn::make('email_verified_at')
                     ->dateTime()
@@ -202,7 +231,7 @@ class CustomerResource extends Resource
                 Tables\Actions\Action::make('addChild')
                     ->label('Add Person Under')
                     ->form([
-                        Fieldset::make()->columns(3)->schema([
+                        Fieldset::make()->columns(4)->schema([
                             Forms\Components\TextInput::make('name')
                                 ->required()
                                 ->maxLength(191),
@@ -217,10 +246,16 @@ class CustomerResource extends Resource
                                 ->prefixIcon('heroicon-m-phone')->prefixIconColor(Color::Orange)
                                 ->required()->unique(ignoreRecord: true)
                                 ->maxLength(12),
+                            ToggleButtons::make('type')->columns(2)->options(
+                                User::getDirectionLabels()
+
+                            )->label('Type')
+                                ->default(User::DIRECTION_RIGHT)
+                                ->required(),
                             Forms\Components\FileUpload::make('profile_photo_path')
                                 ->image()->columnSpanFull()
                                 ->label("Image"),
-                            Grid::make()->columns(3)->schema([
+                            Grid::make()->columns(4)->schema([
                                 Select::make('country_id')
                                     ->label('Country')
                                     ->relationship('country', 'name')
@@ -233,11 +268,7 @@ class CustomerResource extends Resource
                                     ->searchable()
                                     ->placeholder('Select City'),
 
-                                Select::make('rank_id')
-                                    ->label('Rank')
-                                    ->relationship('rank', 'name')
-                                    ->placeholder('Select Rank')
-                                    ->preload(),
+
                             ])
                         ])
 
@@ -278,7 +309,7 @@ class CustomerResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            BvHistoryRelationManager::class,
         ];
     }
 

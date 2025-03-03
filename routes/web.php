@@ -10,6 +10,7 @@ use App\Http\Controllers\DownloadController;
 use App\Http\Controllers\Frontend\ProductCollectionController;
 use App\Http\Controllers\Frontend\ProductTagController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\IdentifyController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ShippingController;
@@ -23,7 +24,7 @@ use App\Http\Controllers\SiteSettingController;
 use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\UserController;
-
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -158,3 +159,10 @@ Route::post('/users', [UserController::class, 'store'])->name('users.store');
 Route::get('/lang/{lang}', [LanguageController::class, 'switchLang'])->name('changeLang');
 
 require __DIR__ . '/socialstream.php';
+
+Route::post('/logout', function () {
+    Auth::logout();
+    return redirect('/login');
+})->name('logout');
+
+Route::post('/verifyIdentifyId', [IdentifyController::class, 'verify']);

@@ -6,6 +6,7 @@ use App\Filament\Admin\Resources\RankResource\Pages;
 use App\Models\Rank;
 use Filament\Forms;
 use Filament\Forms\Components\Fieldset;
+use Filament\Forms\Components\ToggleButtons;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -30,7 +31,7 @@ class RankResource extends Resource
     {
         return $form
             ->schema([
-                Fieldset::make()->columns(3)->schema([
+                Fieldset::make()->columns(4)->schema([
                     Forms\Components\TextInput::make('name')
                         ->label('Rank Name')
                         ->required()
@@ -46,6 +47,13 @@ class RankResource extends Resource
                         ->label('Minimum Points')
                         ->numeric()
                         ->minValue(0)
+                        ->required(),
+
+                    ToggleButtons::make('type')->columns(2)->options(
+                        Rank::getRankTypes()
+
+                    )->label('Type')
+                        ->default(Rank::TYPE_SALARY)
                         ->required(),
 
                     Forms\Components\Textarea::make('benefits')

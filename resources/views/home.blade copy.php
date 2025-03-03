@@ -8,7 +8,6 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <style>
         body {
@@ -69,7 +68,7 @@
             border-collapse: collapse;
         }
 
-        .user-status {
+        .user-status td {
             font-size: 13px;
             padding: 2px 5px;
             border-top: 1px solid #ddd;
@@ -509,6 +508,8 @@
 
 
         /** end Swapper */
+
+        /* 📱 Mobile-Friendly Layout */
     </style>
 </head>
 
@@ -521,12 +522,9 @@
 
             <!-- Left Section: Language Selector & Logout Button -->
             <div class="d-flex align-items-center">
-                <form method="POST" action="{{ route('logout') }}" class="d-inline">
-                    @csrf
-                    <button type="submit" class="btn-orange">
-                        {{ __('تسجيل خروج') }}
-                    </button>
-                </form>
+                <button class="btn" style="background-color: orange; border: 1px solid orange;">
+                    <span style="color: white;"> {{ __('messages.logout') }}</span>
+                </button>
                 <select class="form-select me-2" style="background-color: white; border: 1px solid black;"
                     onchange="window.location.href=this.value">
                     <option value="{{ route('changeLang', 'ar') }}">🇸🇦 العربية</option>
@@ -544,28 +542,23 @@
                     {{-- {{ __('messages.welcome') }} --}}
                     {{ 'مرحباً ' }}
                     بك مجدداً! <strong>
+
                         {{ Auth::check() ? Auth::user()->name : 'Guest' }}
-                    </strong></p>
+                    </strong>
+                </p>
                 <p class="last-login">آخر تسجيل للدخول: 04 JAN 2024 - 23:56 (HKST)</p>
                 <table class="table table-borderless user-status table-bordered">
 
 
 
                     <tr>
-                        <td class="text-start">رتبة الراتب:</td>
-                        <td class="text-end"><span class="status-text">
-                                {{ auth()->user()->rank->name ?? 'غير محدد' }}
-                            </span></td>
+                        <td class="text-start">تصنيفك الحالي:</td>
+                        <td class="text-end"><span class="status-text">Silver Star</span></td>
                     </tr>
                     <tr>
-                        <td class="text-start">رتبة الفريق:</td>
-                        <td class="text-end"><span class="status-text">
-                                {{ auth()->user()->teamRank->name ?? 'غير محدد' }}
-                            </span></td>
+                        <td class="text-start">درجتك الحالي:</td>
+                        <td class="text-end"><span class="status-text">Silver Star</span></td>
                     </tr>
-
-
-
 
                 </table>
             </div>
@@ -864,7 +857,7 @@
                     <div class="col-md-4">
                         <div class="card p-3 shadow-sm text-center border rounded-3">
                             <div class="d-flex align-items-center justify-content-between">
-                                <h6 class="mb-0">💰 اللجان</h6>
+                                <h6 class="mb-0">💰 العمولات</h6>
                                 <img src="https://cdn-icons-png.flaticon.com/512/2698/2698259.png" alt="Coins Icon"
                                     width="20">
                             </div>
@@ -924,53 +917,24 @@
                             <hr>
                             <div class="d-flex justify-content-between align-items-center mb-2">
                                 <label class="mb-0">أسبوع:</label>
-                                <select id="weekSelect" class="form-select form-select-sm w-50">
-                                    <option>تحميل...</option>
+                                <select class="form-select form-select-sm w-50">
+                                    <option>1</option>
+                                    <option>2</option>
                                 </select>
                             </div>
                             <div class="d-flex justify-content-between align-items-center mb-2">
                                 <label class="mb-0">سنة:</label>
-                                <select id="yearSelect" class="form-select form-select-sm w-50">
-                                    <option>تحميل...</option>
+                                <select class="form-select form-select-sm w-50">
+                                    <option>2024</option>
+                                    <option>2023</option>
                                 </select>
                             </div>
-
                             <div class="d-flex justify-content-between align-items-center mb-3">
                                 <label class="mb-0">TC:</label>
                                 <select class="form-select form-select-sm w-50">
                                     <option>001</option>
                                 </select>
                             </div>
-                            <div class="row mb-3">
-                                <div class="col-6">
-                                    <div class="text-center">
-                                        <small class="d-block text-muted">Left BV</small>
-                                        <span class="h5" id="leftBV">0</span>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="text-center">
-                                        <small class="d-block text-muted">Right BV</small>
-                                        <span class="h5" id="rightBV">0</span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row mb-3">
-                                <div class="col-6">
-                                    <div class="text-center">
-                                        <small class="d-block text-muted">Left BV لجنة</small>
-                                        <span class="h5" id="leftLegBV">0</span>
-                                    </div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="text-center">
-                                        <small class="d-block text-muted">Right BV لجنة</small>
-                                        <span class="h5" id="rightLegBV">0</span>
-                                    </div>
-                                </div>
-                            </div>
-
                             <button class="btn btn-dark w-100 py-2">إظهار</button>
                         </div>
                     </div>
@@ -984,14 +948,11 @@
 
                     <div class="col-md-4">
                         <div class="card shadow-sm p-3 text-center">
-                            <h5 class="text-warning" style="text-align: left;">حساب Q</h5>
-                            <input type="text" id="qcodeInput" class="form-control mb-2"
-                                placeholder="أدخل رمز التعريف">
-                            <button class="btn btn-warning w-100" onclick="verifyIdentifyId()">التحقق</button>
-                            <div id="identifyMessage" class="mt-2"></div> <!-- Placeholder for messages -->
+                            <h5 class="text-warning">رمز رقم التعريف الشخصي</h5>
+                            <input type="text" class="form-control mb-2" placeholder="أدخل رمز التعريف">
+                            <button class="btn btn-warning w-100">التحقق</button>
                         </div>
                     </div>
-
                     <div class="col-md-8">
                         <div class="card shadow-sm p-3">
                             <h5 class="text-warning">أعضاء جدد بشبكتي</h5>
@@ -1004,17 +965,16 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse(Auth::user()->children as $child)
-                                        <tr>
-                                            <td>{{ $child->id }}</td>
-                                            <td>{{ $child->name }}</td>
-                                            <td>{{ $child->country->name ?? 'غير محدد' }}</td>
-                                        </tr>
-                                    @empty
-                                        <tr>
-                                            <td colspan="3" class="text-center">لا يوجد أعضاء في شبكتك حالياً</td>
-                                        </tr>
-                                    @endforelse
+                                    <tr>
+                                        <td>HN747647</td>
+                                        <td>محمد حامد</td>
+                                        <td>Kurdistan - region of Iraq</td>
+                                    </tr>
+                                    <tr>
+                                        <td>HN739813</td>
+                                        <td>محمد حامد</td>
+                                        <td>Kurdistan - region of Iraq</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -1183,162 +1143,7 @@
         showSlide(slideIndex);
     </script>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const yearSelect = document.getElementById("yearSelect");
-            const weekSelect = document.getElementById("weekSelect");
-            const leftBVSpan = document.getElementById("leftBV"); // Left BV
-            const rightBVSpan = document.getElementById("rightBV"); // Right BV
-            const leftLegBVSpan = document.getElementById("leftLegBV"); // Left BV لجنة
-            const rightLegBVSpan = document.getElementById("rightLegBV"); // Right BV لجنة
-            const userId = "{{ auth()->user()->id }}"; // Get user ID from Laravel blade
 
-            // Populate years (last 5 years)
-            const currentYear = new Date().getFullYear();
-            for (let i = 0; i < 5; i++) {
-                let yearOption = document.createElement("option");
-                yearOption.value = currentYear - i;
-                yearOption.textContent = currentYear - i;
-                yearSelect.appendChild(yearOption);
-            }
-
-            // Fetch weeks when the year is selected
-            yearSelect.addEventListener("change", function() {
-                let selectedYear = yearSelect.value;
-                fetchWeeks(selectedYear);
-            });
-
-            // Fetch BV when the week is changed
-            weekSelect.addEventListener("change", function() {
-                let selectedYear = yearSelect.value;
-                let selectedWeek = weekSelect.value;
-                fetchBV(selectedYear, selectedWeek);
-            });
-
-            // Fetch weeks from API
-            function fetchWeeks(year) {
-                fetch(`/api/getWeeksList/${year}`)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! Status: ${response.status}`);
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        weekSelect.innerHTML = ""; // Clear existing options
-                        if (data.length === 0) {
-                            let option = document.createElement("option");
-                            option.textContent = "لا توجد أسابيع متاحة";
-                            weekSelect.appendChild(option);
-                            return;
-                        }
-
-                        data.forEach(week => {
-                            let option = document.createElement("option");
-                            option.value = week.week_number;
-                            option.textContent = `الأسبوع ${week.week_number}`;
-                            weekSelect.appendChild(option);
-                        });
-
-                        // Auto-select the first week and fetch BV
-                        if (data.length > 0) {
-                            weekSelect.value = data[0].week_number;
-                            fetchBV(year, data[0].week_number);
-                        }
-                    })
-                    .catch(error => {
-                        console.error("Error fetching weeks:", error);
-                        alert("⚠️ فشل تحميل الأسابيع. يرجى التحقق من الاتصال بالخادم.");
-                    });
-            }
-
-            // Fetch BV from API
-            function fetchBV(year, week) {
-                fetch(`/api/bvHistory/${year}/${week}/${userId}`)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! Status: ${response.status}`);
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        if (data.success && data.data[year] && data.data[year][week]) {
-                            let bvInfo = data.data[year][week][""][0]; // Accessing first item in array
-
-                            // Update Left BV and Right BV
-                            leftBVSpan.textContent = bvInfo.left_bv ?? "0";
-                            rightBVSpan.textContent = bvInfo.right_bv ?? "0";
-
-                            // Update Left BV لجنة and Right BV لجنة
-                            leftLegBVSpan.textContent = bvInfo.left_bv ??
-                                "0"; // Assuming it's the same as left_bv
-                            rightLegBVSpan.textContent = bvInfo.right_bv ??
-                                "0"; // Assuming it's the same as right_bv
-                        } else {
-                            leftBVSpan.textContent = "0";
-                            rightBVSpan.textContent = "0";
-                            leftLegBVSpan.textContent = "0";
-                            rightLegBVSpan.textContent = "0";
-                        }
-                    })
-                    .catch(error => {
-                        console.error("Error fetching BV:", error);
-                        leftBVSpan.textContent = "0";
-                        rightBVSpan.textContent = "0";
-                        leftLegBVSpan.textContent = "0";
-                        rightLegBVSpan.textContent = "0";
-                        alert("⚠️ فشل تحميل بيانات BV. يرجى المحاولة لاحقًا.");
-                    });
-            }
-
-            // Load weeks for the current year on page load
-            fetchWeeks(currentYear);
-        });
-    </script>
-
-    <script>
-        function verifyIdentifyId() {
-            const qcodeInput = document.getElementById("qcodeInput").value.trim();
-            const identifyMessage = document.getElementById("identifyMessage");
-
-            // Clear previous messages
-            identifyMessage.innerHTML = "";
-
-            if (!qcodeInput) {
-                identifyMessage.innerHTML = `<span class="text-danger">⚠️ يرجى إدخال رمز التعريف.</span>`;
-                return;
-            }
-            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
-
-            // Send POST request to the backend API
-            fetch("/verifyIdentifyId", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        // "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
-                        "X-CSRF-TOKEN": csrfToken // Include the CSRF token
-
-                    },
-                    body: JSON.stringify({
-                        code_q: qcodeInput
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        identifyMessage.innerHTML = `<span class="text-success">✅ رمز التعريف صحيح!</span>`;
-                    } else {
-                        identifyMessage.innerHTML =
-                            `<span class="text-danger">❌ رمز التعريف غير صحيح. يرجى المحاولة مرة أخرى.</span>`;
-                    }
-                })
-                .catch(error => {
-                    console.error("Error verifying identify ID:", error);
-                    identifyMessage.innerHTML =
-                        `<span class="text-danger">⚠️ حدث خطأ أثناء التحقق. حاول لاحقًا.</span>`;
-                });
-        }
-    </script>
 </body>
 
 </html>

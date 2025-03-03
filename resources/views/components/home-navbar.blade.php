@@ -56,8 +56,7 @@
                              Cart
                              <span id="cart-counter"
                                  class="absolute top-0 -right-2 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">
-                                 {{ auth()->user()->cart_count }}
-                             </span>
+                                 {{ auth()->check() ? auth()->user()->cart_count : 0 }}
                          </a>
 
                          <!-- Cart Dropdown -->
@@ -73,7 +72,7 @@
                                                  <p class="text-xs text-gray-500">Qty: {{ $item['quantity'] }} -
                                                      ${{ number_format($item['price'], 2) }}</p>
                                              </div>
-                                             
+
                                          </div>
                                      @endforeach
                                  @else

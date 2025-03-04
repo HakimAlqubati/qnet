@@ -24,6 +24,7 @@ use App\Http\Controllers\SiteSettingController;
 use App\Http\Controllers\StripePaymentController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WithdrawalController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -37,7 +38,7 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/', [HomeController::class, 'index']);
+Route::get('/', [HomeController::class, 'index'])->middleware('auth');
 
 // Product routes
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
@@ -166,3 +167,4 @@ Route::post('/logout', function () {
 })->name('logout');
 
 Route::post('/verifyIdentifyId', [IdentifyController::class, 'verify']);
+Route::post('/withdrawal', [WithdrawalController::class, 'store']);

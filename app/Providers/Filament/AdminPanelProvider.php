@@ -44,7 +44,7 @@ class AdminPanelProvider extends PanelProvider
             ->brandLogoHeight('1.5rem')
             ->login(CustomLogin::class)
             ->registration(\App\Filament\Admin\Pages\Auth\Register::class) 
-            
+            ->sidebarCollapsibleOnDesktop()
 
 
             // ->login([AuthenticatedSessionController::class, 'create'])

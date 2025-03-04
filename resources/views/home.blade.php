@@ -704,7 +704,7 @@
             <li class="nav-item">
                 <a class="nav-link" data-bs-toggle="tab" href="#settlement">
                     <span class="icon">💬</span>
-                    <span> ملخص التسوية</span>
+                    <span> دليل التسوية</span>
                 </a>
             </li>
         </ul>
@@ -787,6 +787,7 @@
             </div>
 
             <!-- ✅ ملخص التسوية مطابق للصورة -->
+            <!-- ✅ دليل التسوية (Settlement Guide) -->
             <div id="settlement" class="tab-pane fade">
                 <div class="settlement-summary">
                     <div class="header">ملخص التسوية</div>
@@ -794,41 +795,135 @@
                         <thead>
                             <tr>
                                 <th>نوع البطاقة</th>
-                                <th>القيمة</th>
+                                <th>القيمة (USD)</th>
                                 <th>الكمية</th>
                                 <th>الإجمالي الفرعي (USD)</th>
                             </tr>
                         </thead>
                         <tbody>
+                            <!-- صف نموذج لـ eCard بقيمة 1.00 -->
                             <tr>
                                 <td>eCard (USD)</td>
-                                <td>1.00</td>
-                                <td>x 0</td>
-                                <td>0.00</td>
+                                <td class="dollar-value">1.00</td>
+                                <td>
+                                    <input type="number" class="form-control quantity-input" value="0"
+                                        min="0" step="1" style="width:80px;" data-dollar="1.00">
+                                </td>
+                                <td class="subtotal">0.00</td>
                             </tr>
+                            <!-- صف نموذج لـ eCard بقيمة 5.00 -->
                             <tr>
                                 <td>eCard (USD)</td>
-                                <td>5.00</td>
-                                <td>x 0</td>
-                                <td>0.00</td>
+                                <td class="dollar-value">5.00</td>
+                                <td>
+                                    <input type="number" class="form-control quantity-input" value="0"
+                                        min="0" step="1" style="width:80px;" data-dollar="5.00">
+                                </td>
+                                <td class="subtotal">0.00</td>
                             </tr>
-
+                            <!-- صف نموذج لـ eCard بقيمة 10.00 -->
+                            <tr>
+                                <td>eCard (USD)</td>
+                                <td class="dollar-value">10.00</td>
+                                <td>
+                                    <input type="number" class="form-control quantity-input" value="0"
+                                        min="0" step="1" style="width:80px;" data-dollar="10.00">
+                                </td>
+                                <td class="subtotal">0.00</td>
+                            </tr>
+                            <!-- صف نموذج لـ eCard بقيمة 20.00 -->
+                            <tr>
+                                <td>eCard (USD)</td>
+                                <td class="dollar-value">20.00</td>
+                                <td>
+                                    <input type="number" class="form-control quantity-input" value="0"
+                                        min="0" step="1" style="width:80px;" data-dollar="20.00">
+                                </td>
+                                <td class="subtotal">0.00</td>
+                            </tr>
+                            <!-- صف نموذج لـ eCard بقيمة 50.00 -->
+                            <tr>
+                                <td>eCard (USD)</td>
+                                <td class="dollar-value">50.00</td>
+                                <td>
+                                    <input type="number" class="form-control quantity-input" value="0"
+                                        min="0" step="1" style="width:80px;" data-dollar="50.00">
+                                </td>
+                                <td class="subtotal">0.00</td>
+                            </tr>
+                            <!-- صف نموذج لـ eCard بقيمة 100.00 -->
+                            <tr>
+                                <td>eCard (USD)</td>
+                                <td class="dollar-value">100.00</td>
+                                <td>
+                                    <input type="number" class="form-control quantity-input" value="0"
+                                        min="0" step="1" style="width:80px;" data-dollar="100.00">
+                                </td>
+                                <td class="subtotal">0.00</td>
+                            </tr>
+                            <!-- صف نموذج لـ eCard بقيمة 200.00 -->
+                            <tr>
+                                <td>eCard (USD)</td>
+                                <td class="dollar-value">200.00</td>
+                                <td>
+                                    <input type="number" class="form-control quantity-input" value="0"
+                                        min="0" step="1" style="width:80px;" data-dollar="200.00">
+                                </td>
+                                <td class="subtotal">0.00</td>
+                            </tr>
+                            <!-- صف نموذج لـ eCard بقيمة 400.00 -->
+                            <tr>
+                                <td>eCard (USD)</td>
+                                <td class="dollar-value">400.00</td>
+                                <td>
+                                    <input type="number" class="form-control quantity-input" value="0"
+                                        min="0" step="1" style="width:80px;" data-dollar="400.00">
+                                </td>
+                                <td class="subtotal">0.00</td>
+                            </tr>
+                            <!-- صف نموذج لـ eCard بقيمة 500.00 -->
+                            <tr>
+                                <td>eCard (USD)</td>
+                                <td class="dollar-value">500.00</td>
+                                <td>
+                                    <input type="number" class="form-control quantity-input" value="0"
+                                        min="0" step="1" style="width:80px;" data-dollar="500.00">
+                                </td>
+                                <td class="subtotal">0.00</td>
+                            </tr>
+                            <!-- صف نموذج لبطاقة جديدة بقيمة 1.00 -->
+                            <tr>
+                                <td>نوع جديد للبطاقة</td>
+                                <td class="dollar-value">1.00</td>
+                                <td>
+                                    <input type="number" class="form-control quantity-input" value="0"
+                                        min="0" step="1" style="width:80px;" data-dollar="1.00">
+                                </td>
+                                <td class="subtotal">0.00</td>
+                            </tr>
                         </tbody>
                         <tfoot>
                             <tr>
                                 <td colspan="3"><strong>الإجمالي الفرعي (دولار أمريكي)</strong></td>
-                                <td><strong>(USD) 670.00</strong></td>
+                                <td id="totalSubTotal"><strong>(USD) 0.00</strong></td>
                             </tr>
                             <tr>
                                 <td colspan="3">الرسوم (دولار أمريكي)</td>
-                                <td>(USD) 20.10</td>
+                                <td id="fees">(USD) 0.00</td>
                             </tr>
-
                         </tfoot>
                     </table>
-                    <div class="settlement-footer">رصيد حساب Q النهائي بعد التسوية: 29.40 (USD)</div>
+                    <div class="settlement-footer">رصيد حساب Q النهائي بعد التسوية: <span
+                            id="finalBalance">0.00</span> (USD)</div>
                 </div>
+                <div class="text-center mt-3">
+                    <textarea id="withdrawalNotes" class="form-control mb-2" placeholder="أدخل ملاحظات الطلب (اختياري)"></textarea>
+                    <button id="submitWithdrawal" class="btn btn-warning w-100">إرسال طلب السحب</button>
+                </div>
+
             </div>
+
+
         </div>
     </div>
 
@@ -1004,17 +1099,25 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse(Auth::user()->children as $child)
-                                        <tr>
-                                            <td>{{ $child->id }}</td>
-                                            <td>{{ $child->name }}</td>
-                                            <td>{{ $child->country->name ?? 'غير محدد' }}</td>
-                                        </tr>
-                                    @empty
-                                        <tr>
-                                            <td colspan="3" class="text-center">لا يوجد أعضاء في شبكتك حالياً</td>
-                                        </tr>
-                                    @endforelse
+
+                                    @if (auth()->check())
+                                        @if (Auth::user()->children->count() == 0)
+                                            <tr>
+                                                <td colspan="3" class="text-center">لا يوجد أعضاء في شبكتك حالياً
+                                                </td>
+                                            </tr>
+                                        @endif
+                                        @foreach (Auth::user()->children as $child)
+                                            <tr>
+                                                <td>{{ $child->id }}</td>
+                                                <td>{{ $child->name }}</td>
+                                                <td>{{ $child->country->name ?? 'غير محدد' }}</td>
+                                            </tr>
+                                        @endforeach
+                                    @endif
+
+
+
                                 </tbody>
                             </table>
                         </div>
@@ -1339,6 +1442,120 @@
                 });
         }
     </script>
+    <script>
+        // دالة لحساب المجموع لكل صف والمجموع الكلي
+        function calculateSubtotals() {
+            let total = 0;
+            // استرجاع جميع حقول الكمية
+            document.querySelectorAll('.quantity-input').forEach(input => {
+                let dollarValue = parseFloat(input.getAttribute('data-dollar'));
+                let quantity = parseFloat(input.value) || 0;
+                let subtotal = dollarValue * quantity;
+                // تحديث خلية الإجمالي الفرعي في نفس الصف
+                let row = input.closest('tr');
+                row.querySelector('.subtotal').textContent = subtotal.toFixed(2);
+                total += subtotal;
+            });
+            // تحديث إجمالي المبلغ في تذييل الجدول
+            document.getElementById('totalSubTotal').innerHTML = `<strong>(USD) ${total.toFixed(2)}</strong>`;
+            // يمكن حساب الرسوم أو الرصيد النهائي هنا إذا كانت القواعد محددة
+            // كمثال:
+            document.getElementById('fees').textContent = `(USD) ${ (total * 0.05).toFixed(2) }`; // مثلاً 5% رسوم
+            document.getElementById('finalBalance').textContent = (total - (total * 0.05)).toFixed(2);
+        }
+
+        // الاستماع لتغيرات حقول الإدخال
+        document.querySelectorAll('.quantity-input').forEach(input => {
+            input.addEventListener('input', calculateSubtotals);
+        });
+
+        // حساب أولي عند تحميل الصفحة
+        calculateSubtotals();
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+
+            document.getElementById("submitWithdrawal").addEventListener("click", function() {
+                function calculateSubtotals() {
+                    let total = 0;
+
+                    // استرجاع جميع حقول الكمية وحساب المجموع
+                    document.querySelectorAll('.quantity-input').forEach(input => {
+                        let dollarValue = parseFloat(input.getAttribute('data-dollar'));
+                        let quantity = parseFloat(input.value) || 0;
+                        let subtotal = dollarValue * quantity;
+
+                        // تحديث خلية الإجمالي الفرعي في نفس الصف
+                        let row = input.closest('tr');
+                        row.querySelector('.subtotal').textContent = subtotal.toFixed(2);
+
+                        total += subtotal;
+                    });
+
+                    // تحديث الإجمالي الفرعي
+                    document.getElementById('totalSubTotal').innerHTML =
+                        `<strong>(USD) ${total.toFixed(2)}</strong>`;
+
+                    // حساب الرسوم والرصيد النهائي (اختياري)
+                    let fees = total * 0.05; // نفترض أن الرسوم 5%
+                    let finalBalance = total - fees;
+
+                    document.getElementById('fees').textContent = `(USD) ${fees.toFixed(2)}`;
+                    document.getElementById('finalBalance').textContent = finalBalance.toFixed(2);
+
+                    // إرجاع المجموع لاستخدامه في زر السحب
+                    return total;
+                }
+
+                // تنفيذ الحساب عند تغيير المدخلات
+                document.querySelectorAll('.quantity-input').forEach(input => {
+                    input.addEventListener('input', calculateSubtotals);
+                });
+
+                // حساب المجموع عند تحميل الصفحة
+                calculateSubtotals();
+
+                let totalAmount = calculateSubtotals(); // استرجاع المجموع المحسوب
+                alert('dd' + totalAmount)
+                if (totalAmount <= 0) {
+                    alert("يجب إدخال كمية صالحة لإنشاء طلب السحب.");
+                    return;
+                }
+
+                let requestData = {
+                    amount: totalAmount, // إرسال المبلغ الكلي فقط
+                    notes: document.getElementById("withdrawalNotes").value
+                };
+
+                fetch("/withdrawal", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": document.querySelector(
+                                    'meta[name="csrf-token"]')
+                                .getAttribute("content"),
+                        },
+                        body: JSON.stringify(requestData)
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert("✅ تم تقديم طلب السحب بنجاح! المبلغ الإجمالي: " + data
+                                .amount);
+                            location.reload();
+                        } else {
+                            alert("❌ خطأ: " + data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error("❌ خطأ:", error);
+                        alert("⚠️ حدث خطأ أثناء معالجة الطلب.");
+                    });
+            });
+        });
+    </script>
+
 </body>
 
 </html>

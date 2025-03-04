@@ -12,6 +12,7 @@ class VerifyCsrfToken extends Middleware
      * @var array<int, string>
      */
     protected $except = [
-        '/verifyIdentifyId' // Add the route here to exclude CSRF checks if needed
+        '/verifyIdentifyId',
+        '/api/withdrawal',
     ];
 }

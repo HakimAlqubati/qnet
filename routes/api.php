@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\Api\BVHistoryController;
+use App\Http\Controllers\WithdrawalController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,5 +26,7 @@ Route::get('/countries/{country}/cities', [CountryController::class, 'getCities'
 // Route::middleware('auth:sanctum')->group(function () {
 Route::get('/bvHistory/{year}/{week}/{userId}', [BVHistoryController::class, 'getByYearWeek']);
 Route::get('/getWeeksList/{year}', [BVHistoryController::class, 'getWeeksList']);
+
+
 
 // });

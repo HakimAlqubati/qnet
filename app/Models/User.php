@@ -304,6 +304,26 @@ class User extends Authenticatable implements HasDefaultTenant, HasTenants, Fila
         return  $this->cart()->count() ?? 0;
     }
 
+    public function currentBalance(): Attribute
+    {
+        return Attribute::get(function () {
+            $increases = $this->accountHistory()
+                ->where('type', UserAccountHistory::TYPE_INCREASE)
+                ->sum('amount');
+
+            $decreases = $this->accountHistory()
+                ->where('type', UserAccountHistory::TYPE_DECREASE)
+                ->sum('amount');
+
+            return $increases - $decreases;
+        });
+    }
+
+    public function accountHistory(): HasMany
+    {
+        return $this->hasMany(UserAccountHistory::class);
+    }
+
 
     // 🔹 Define Direction Constants
     public const DIRECTION_RIGHT = 'R';
@@ -355,10 +375,14 @@ class User extends Authenticatable implements HasDefaultTenant, HasTenants, Fila
         }
 
         return $query
-            ->groupBy('year', 'week','bv_value')
+            ->groupBy('year', 'week', 'bv_value')
             ->orderBy('created_at')
             ->get()
-            ->groupBy(['year', 'week','id'])
-            ;
+            ->groupBy(['year', 'week', 'id'])
+        ;
+    }
+    public function withdrawalRequests(): HasMany
+    {
+        return $this->hasMany(WithdrawalRequest::class);
     }
 }

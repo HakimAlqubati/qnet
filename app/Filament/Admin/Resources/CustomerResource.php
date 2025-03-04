@@ -11,7 +11,7 @@ use App\Filament\Admin\Resources\UserResource\RelationManagers;
 use App\Models\BVHistory;
 use App\Models\Rank;
 use App\Models\User;
-
+use App\Models\UserAccountHistory;
 use Filament\Forms;
 use Filament\Forms\Components\Fieldset;
 use Filament\Forms\Components\Grid;
@@ -122,8 +122,7 @@ class CustomerResource extends Resource
                             TextInput::make('identify_id')
                                 ->prefixIcon('heroicon-m-lock-closed')
                                 ->prefixIconColor(Color::Orange)
-                                ->label('ID')
-                                ,
+                                ->label('ID'),
                             TextInput::make('code_q')
 
                                 ->prefixIcon('heroicon-m-check')->prefixIconColor(Color::Orange)
@@ -163,6 +162,8 @@ class CustomerResource extends Resource
                 TextColumn::make('childrenCount')->label('Persons Under')->toggleable()->alignCenter(true),
                 // TextColumn::make('currentRightBV')->label('Right BV')
                 //     ->toggleable()->alignCenter(true),
+                TextColumn::make('current_balance')->label('Dollor Account')
+                    ->toggleable()->alignCenter(true),
                 TextColumn::make('currentRSP')->label('Current RSP')->toggleable()->alignCenter(true),
                 Tables\Columns\TextColumn::make('email_verified_at')
                     ->dateTime()
@@ -228,6 +229,40 @@ class CustomerResource extends Resource
                         ]);
                     })
                     ->icon('heroicon-o-plus')->button()->color(Color::Blue),
+
+                Tables\Actions\Action::make('addAccountHistory')
+                    ->label('Add Account Transaction')
+                    ->form([
+                        Fieldset::make()->columns(2)->schema([
+                            Forms\Components\TextInput::make('amount')
+                                ->label('Amount')
+                                ->numeric()
+                                ->required(),
+                            Forms\Components\Select::make('type')
+                                ->label('Transaction Type')
+                                ->options(UserAccountHistory::getTypeLabels())
+                                ->required(),
+                            Forms\Components\Textarea::make('notes')
+                                ->label('Notes')
+                                ->columnSpanFull()
+                                ->maxLength(255),
+                        ])
+                    ])
+                    ->action(function (array $data, User $record) {
+                        $record->accountHistory()->create([
+                            'amount' => $data['amount'],
+                            'type' => $data['type'],
+                            'notes' => $data['notes']
+                        ]);
+
+                        Notification::make()
+                            ->title('Account Transaction Added')
+                            ->success()
+                            ->send();
+                    })
+                    ->icon('heroicon-o-currency-dollar')
+                    ->button()
+                    ->color(Color::Emerald),
                 Tables\Actions\Action::make('addChild')
                     ->label('Add Person Under')
                     ->form([

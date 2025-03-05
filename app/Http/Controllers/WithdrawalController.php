@@ -13,16 +13,9 @@ class WithdrawalController extends Controller
 {
     public function store(Request $request)
     {
-        $request->validate([
-            'withdrawal_details' => 'nullable|array',
-            'withdrawal_details.*.amount' => 'numeric|min:0',
-            'notes' => 'nullable|string',
-        ]);
-
+        Log::info('dddd', [$request->all()]);
         // حساب المبلغ الكلي عند عدم وجود تفاصيل
-        $totalAmount = collect($request->input('withdrawal_details', []))
-            ->sum('amount');
-
+        $totalAmount = $request->all()['amount'] ?? 0;
         if ($totalAmount <= 0) {
             return response()->json([
                 'success' => false,
@@ -34,7 +27,7 @@ class WithdrawalController extends Controller
         $withdrawalRequest = WithdrawalRequest::create([
             'user_id' => Auth::id(),
             'notes' => $request->input('notes'),
-            'status' => 'pending',
+            'type' => 'decrease',
             'amount' => $totalAmount, // تخزين المبلغ الكلي
         ]);
 

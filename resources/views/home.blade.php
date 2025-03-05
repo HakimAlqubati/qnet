@@ -788,6 +788,32 @@
 
             <!-- ✅ ملخص التسوية مطابق للصورة -->
             <!-- ✅ دليل التسوية (Settlement Guide) -->
+            <!-- Modal for confirmation -->
+            <!-- Modal for confirmation -->
+            <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="confirmationModalLabel">تأكيد السحب</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="إغلاق"></button>
+                        </div>
+                        <div class="modal-body">
+                            <p>يرجى إدخال رمز التعريف الخاص بك لتأكيد السحب.</p>
+                            <input type="text" id="confirmationInput" class="form-control"
+                                placeholder="أدخل رمز التعريف">
+                            <small id="errorMessage" class="text-danger d-none">⚠️ رمز التعريف غير صحيح!</small>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                            <button type="button" class="btn btn-warning" id="confirmWithdrawal">تأكيد</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
             <div id="settlement" class="tab-pane fade">
                 <div class="settlement-summary">
                     <div class="header">ملخص التسوية</div>
@@ -1475,83 +1501,86 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+            const submitWithdrawalButton = document.getElementById("submitWithdrawal");
+            const confirmButton = document.getElementById("confirmWithdrawal");
+            const confirmationInput = document.getElementById("confirmationInput");
+            const errorMessage = document.getElementById("errorMessage");
 
-            document.getElementById("submitWithdrawal").addEventListener("click", function() {
-                function calculateSubtotals() {
-                    let total = 0;
+            let totalAmount = 0;
+            const userCodeQ = "{{ auth()->user()->code_q }}"; // Get `code_q` from Laravel
 
-                    // استرجاع جميع حقول الكمية وحساب المجموع
-                    document.querySelectorAll('.quantity-input').forEach(input => {
-                        let dollarValue = parseFloat(input.getAttribute('data-dollar'));
-                        let quantity = parseFloat(input.value) || 0;
-                        let subtotal = dollarValue * quantity;
+            function calculateSubtotals() {
+                totalAmount = 0;
 
-                        // تحديث خلية الإجمالي الفرعي في نفس الصف
-                        let row = input.closest('tr');
-                        row.querySelector('.subtotal').textContent = subtotal.toFixed(2);
-
-                        total += subtotal;
-                    });
-
-                    // تحديث الإجمالي الفرعي
-                    document.getElementById('totalSubTotal').innerHTML =
-                        `<strong>(USD) ${total.toFixed(2)}</strong>`;
-
-                    // حساب الرسوم والرصيد النهائي (اختياري)
-                    let fees = total * 0.05; // نفترض أن الرسوم 5%
-                    let finalBalance = total - fees;
-
-                    document.getElementById('fees').textContent = `(USD) ${fees.toFixed(2)}`;
-                    document.getElementById('finalBalance').textContent = finalBalance.toFixed(2);
-
-                    // إرجاع المجموع لاستخدامه في زر السحب
-                    return total;
-                }
-
-                // تنفيذ الحساب عند تغيير المدخلات
                 document.querySelectorAll('.quantity-input').forEach(input => {
-                    input.addEventListener('input', calculateSubtotals);
+                    let dollarValue = parseFloat(input.getAttribute('data-dollar'));
+                    let quantity = parseFloat(input.value) || 0;
+                    totalAmount += dollarValue * quantity;
                 });
 
-                // حساب المجموع عند تحميل الصفحة
-                calculateSubtotals();
+                document.getElementById('totalSubTotal').innerHTML =
+                    `<strong>(USD) ${totalAmount.toFixed(2)}</strong>`;
+                let fees = totalAmount * 0.05;
+                document.getElementById('fees').textContent = `(USD) ${fees.toFixed(2)}`;
+                document.getElementById('finalBalance').textContent = (totalAmount - fees).toFixed(2);
+            }
 
-                let totalAmount = calculateSubtotals(); // استرجاع المجموع المحسوب
-                alert('dd' + totalAmount)
+            document.querySelectorAll('.quantity-input').forEach(input => {
+                input.addEventListener('input', calculateSubtotals);
+            });
+
+            calculateSubtotals();
+
+            // Open confirmation modal
+            submitWithdrawalButton.addEventListener("click", function() {
                 if (totalAmount <= 0) {
-                    alert("يجب إدخال كمية صالحة لإنشاء طلب السحب.");
+                    alert("⚠️ يجب إدخال كمية صالحة لإنشاء طلب السحب.");
+                    return;
+                }
+
+                confirmationInput.value = "";
+                errorMessage.classList.add("d-none");
+                let modal = new bootstrap.Modal(document.getElementById("confirmationModal"));
+                modal.show();
+            });
+
+            // Confirm withdrawal after checking `code_q`
+            confirmButton.addEventListener("click", function() {
+                if (confirmationInput.value.trim() !== userCodeQ) {
+                    errorMessage.classList.remove("d-none");
                     return;
                 }
 
                 let requestData = {
-                    amount: totalAmount, // إرسال المبلغ الكلي فقط
+                    amount: totalAmount,
                     notes: document.getElementById("withdrawalNotes").value
                 };
 
-                fetch("/withdrawal", {
+                fetch("{{ route('withdrawal.store') }}", { // Use Laravel route
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
-                            "X-CSRF-TOKEN": document.querySelector(
-                                    'meta[name="csrf-token"]')
-                                .getAttribute("content"),
+                            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]')
+                                .getAttribute("content")
                         },
                         body: JSON.stringify(requestData)
                     })
                     .then(response => response.json())
                     .then(data => {
                         if (data.success) {
-                            alert("✅ تم تقديم طلب السحب بنجاح! المبلغ الإجمالي: " + data
-                                .amount);
+                            alert(`✅ تم تقديم طلب السحب بنجاح! المبلغ الإجمالي: ${data.amount}`);
                             location.reload();
                         } else {
-                            alert("❌ خطأ: " + data.message);
+                            alert(`❌ خطأ: ${data.message}`);
                         }
                     })
                     .catch(error => {
                         console.error("❌ خطأ:", error);
                         alert("⚠️ حدث خطأ أثناء معالجة الطلب.");
                     });
+
+                let modal = bootstrap.Modal.getInstance(document.getElementById("confirmationModal"));
+                modal.hide();
             });
         });
     </script>

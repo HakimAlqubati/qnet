@@ -167,4 +167,5 @@ Route::post('/logout', function () {
 })->name('logout');
 
 Route::post('/verifyIdentifyId', [IdentifyController::class, 'verify']);
-Route::post('/withdrawal', [WithdrawalController::class, 'store']);
+Route::post('/withdrawal', [WithdrawalController::class, 'store'])->name('withdrawal.store');
+

@@ -9,6 +9,7 @@ use App\Filament\Admin\Resources\CustomerResource\RelationManagers\BvHistoryRela
 use App\Filament\Admin\Resources\UserResource\Pages;
 use App\Filament\Admin\Resources\UserResource\RelationManagers;
 use App\Models\BVHistory;
+use App\Models\Country;
 use App\Models\Rank;
 use App\Models\User;
 use App\Models\UserAccountHistory;
@@ -73,13 +74,15 @@ class CustomerResource extends Resource
                         Grid::make()->columns(4)->schema([
                             Select::make('country_id')
                                 ->label('Country')
-                                ->relationship('country', 'name')
+                                ->options(Country::query()->get(['id', 'name'])->pluck('name', 'id'))
                                 ->searchable()
                                 ->placeholder('Select Country'),
 
                             Select::make('city_id')
                                 ->label('City')
-                                ->relationship('city', 'name')
+                                ->options(
+                                    \App\Models\City::query()->pluck('name', 'id')
+                                )
                                 ->searchable()
                                 ->placeholder('Select City'),
 
@@ -162,6 +165,10 @@ class CustomerResource extends Resource
                 TextColumn::make('childrenCount')->label('Persons Under')->toggleable()->alignCenter(true),
                 // TextColumn::make('currentRightBV')->label('Right BV')
                 //     ->toggleable()->alignCenter(true),
+                TextColumn::make('currentRightBV')->label('Right BV')
+                    ->toggleable()->alignCenter(true),
+                TextColumn::make('currentLeftBV')->label('Left BV')
+                    ->toggleable()->alignCenter(true),
                 TextColumn::make('current_balance')->label('Dollor Account')
                     ->toggleable()->alignCenter(true),
                 TextColumn::make('currentRSP')->label('Current RSP')->toggleable()->alignCenter(true),
@@ -283,6 +290,10 @@ class CustomerResource extends Resource
                                 ->prefixIcon('heroicon-m-phone')->prefixIconColor(Color::Orange)
                                 ->required()->unique(ignoreRecord: true)
                                 ->maxLength(12),
+                            TextInput::make('identify_id')
+                                ->prefixIcon('heroicon-m-lock-closed')
+                                ->prefixIconColor(Color::Orange)
+                                ->label('ID'),
                             ToggleButtons::make('type')->columns(2)->options(
                                 User::getDirectionLabels()
 
@@ -296,14 +307,18 @@ class CustomerResource extends Resource
                                 Select::make('country_id')
                                     ->label('Country')
                                     ->relationship('country', 'name')
+                                    ->options(Country::query()->get(['id', 'name'])->pluck('name', 'id'))
                                     ->searchable()
                                     ->placeholder('Select Country'),
 
                                 Select::make('city_id')
                                     ->label('City')
-                                    ->relationship('city', 'name')
+                                    ->options(
+                                        \App\Models\City::query()->pluck('name', 'id')
+                                    )
                                     ->searchable()
                                     ->placeholder('Select City'),
+
 
 
                             ])

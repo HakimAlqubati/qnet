@@ -1301,7 +1301,7 @@
                                         @endif
                                         @foreach (Auth::user()->children as $child)
                                             <tr>
-                                                <td>{{ $child->id }}</td>
+                                                <td>{{ $child->identify_id }}</td>
                                                 <td>{{ $child->name }}</td>
                                                 <td>{{ $child->country->name ?? 'غير محدد' }}</td>
                                             </tr>

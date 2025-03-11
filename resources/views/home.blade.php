@@ -3,7 +3,9 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=1000">
+
+    {{-- <meta name="viewport" content="width=device-width, initial-scale=1"> --}}
     <title>QNET Dashboard - Bootstrap</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -509,6 +511,121 @@
 
 
         /** end Swapper */
+        /**start style with force desktop */
+
+        .container,
+        .container-fluid {
+            max-width: 1000px !important;
+            /* Fixed width */
+            /* width: 1000px !important; */
+        }
+
+        .d-flex {
+            flex-wrap: nowrap !important;
+        }
+
+        .col-lg-3 {
+            width: 25% !important;
+            /* Sidebar */
+        }
+
+        .col-lg-9 {
+            width: 75% !important;
+            /* Main Content */
+        }
+
+
+        /* Prevent Bootstrap grid from stacking on smaller screens */
+        .row {
+            display: flex;
+            flex-wrap: nowrap;
+        }
+
+        html,
+        body {
+            overflow-x: hidden;
+        }
+
+        .img-fluid {
+            width: auto;
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: auto;
+        }
+
+        .img-fluid {
+            max-width: 100%;
+            height: auto;
+            object-fit: contain;
+            /* or "cover" to crop instead of stretching */
+        }
+
+        .banner-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            max-width: 800px;
+            /* Adjust to proper size */
+        }
+
+
+        .custom-banner {
+            width: auto;
+            max-width: 100%;
+            height: auto;
+        }
+
+
+        /**end style with force desktop */
+
+        /** start new tools */
+        /* Footer Tools Grid Layout */
+        .footer-tools {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            /* 4 columns per row */
+            gap: 15px;
+            text-align: center;
+            background-color: #222;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        /* Ensure two rows by wrapping items correctly */
+        .footer-tools .tool {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 14px;
+            padding: 15px;
+            background-color: #333;
+            border-radius: 8px;
+            transition: 0.3s;
+        }
+
+        .footer-tools .tool i {
+            font-size: 30px;
+            margin-bottom: 10px;
+            color: #ffa033;
+        }
+
+        .footer-tools .tool:hover {
+            background-color: #ff8800;
+            transform: scale(1.05);
+        }
+
+        /* Adjust for smaller screens */
+        @media (max-width: 768px) {
+            .footer-tools {
+                grid-template-columns: repeat(2, 1fr);
+                /* 2 columns per row for smaller screens */
+            }
+        }
+
+        /** end new tools */
     </style>
 </head>
 
@@ -663,10 +780,10 @@
         <ul class="nav nav-tabs justify-content-center" id="settlementTabs">
             <li class="nav-item">
 
-                <a class="nav-link active" data-bs-toggle="tab" href="#orders">
+                <a class="nav-link active" data-bs-toggle="tab" href="#shipment_trachking">
                     <span class="icon">💬</span>
                     <span>
-                        الطلب والدفع
+                        تتبع الشحنة
                     </span>
                 </a>
             </li>
@@ -680,7 +797,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#account">
+                <a class="nav-link" data-bs-toggle="tab" href="#settlement">
                     <span class="icon">💬</span>
                     <span>حساب Q</span>
                 </a>
@@ -701,33 +818,79 @@
                     </span>
                 </a>
             </li>
-            <li class="nav-item">
+            {{-- <li class="nav-item">
                 <a class="nav-link" data-bs-toggle="tab" href="#settlement">
                     <span class="icon">💬</span>
                     <span> دليل التسوية</span>
                 </a>
-            </li>
+            </li> --}}
         </ul>
 
         <!-- 🔹 Tabs Content -->
         <div class="tab-content">
-            <div id="orders" class="tab-pane fade show active">
+
+            <div id="shipment_trachking" class="tab-pane fade show"
+                style="background: white; padding: 20px; text-align: left;">
+
+                <!-- 🔹 Title Section with Two Lines -->
+                <div class="text-center mb-3">
+                    <h4 class="fw-bold text-warning">🛒 تتبع شحناتك</h4>
+                    <p class="text-muted">اختر شركة الشحن لمعرفة حالة الطلب</p>
+                </div>
+
+                <!-- 🔹 Shipping Companies List -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <ul class="list-group">
+                            <li class="list-group-item">🚛 أرامكس</li>
+                            <li class="list-group-item">✈️ فيديكس</li>
+                            <li class="list-group-item">📦 دي إتش إل</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <ul class="list-group">
+                            <li class="list-group-item">🏢 البريد السعودي</li>
+                            <li class="list-group-item">🚚 زاجل</li>
+                            <li class="list-group-item">🚀 سمسا</li>
+                        </ul>
+                    </div>
+                </div>
 
             </div>
 
+
             <div id="history" class="tab-pane fade">
+
                 <div class="based_on_history_body">
 
-                    <form id="nameForm">
-                        <select id="sideSelect">
-                            <option value="L">L</option>
-                            <option value="R">R</option>
-                        </select>
-                        <input type="text" id="nameInput" placeholder="ادخل الاسم" required>
-                        <button type="submit">إضافة</button>
-                    </form>
+                    @if (auth()->check())
 
-                    <div id="tablesContainer"></div> <!-- This will hold all generated tables -->
+                        @foreach (Auth::user()->children as $child)
+                            <table style="margin-top: 20px;">
+                                <thead>
+                                    <tr>
+                                        <th> </th>
+                                        <th>الاسم</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @for ($i = 1; $i <= 3; $i++)
+                                        <tr>
+                                            <td>
+                                                <select>
+                                                    <option value="L">L</option>
+                                                    <option value="R">R</option>
+                                                </select>
+                                            </td>
+                                            <td>{{ $child->name }}</td>
+                                        </tr>
+                                    @endfor
+                                </tbody>
+                            </table>
+                        @endforeach
+                    @endif
+
+
 
 
 
@@ -744,44 +907,29 @@
                     <div class="table-container">
                         <table>
                             <thead>
-                                <th colspan="100%">.</th>
+                                <tr>
+                                    <th colspan="100%">
+                                        <span style="color: whitesmoke;">
+                                            رقم البطاقة الإلكترونية
+                                        </span>
+                                    </th>
+                                </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                </tr>
-                                <tr>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                </tr>
-                                <tr>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                </tr>
-                                <tr>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                </tr>
-                                <tr>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                    <td>-</td>
-                                </tr>
+                                @for ($i = 1; $i <= 9; $i++)
+                                    <tr>
+                                        <td>{{ $i }} <input style="width: 95%" type="text" /></td>
+                                    </tr>
+                                @endfor
                             </tbody>
                         </table>
                     </div>
+
+                    <!-- ✅ Submit Button without any operation -->
+                    <button type="button" class="btn btn-warning mt-3" style="background: orange">إرسال</button>
                 </div>
             </div>
+
             <div id="network" class="tab-pane fade">
 
             </div>
@@ -939,6 +1087,9 @@
                             </tr>
                         </tfoot>
                     </table>
+                    <div class="settlement-footer mb-2">رصيد حساب Q الحالي:
+                        <span>{{ auth()->user()->current_balance ?? '0.00' }}</span> (USD)
+                    </div>
                     <div class="settlement-footer">رصيد حساب Q النهائي بعد التسوية: <span
                             id="finalBalance">0.00</span> (USD)</div>
                 </div>
@@ -969,6 +1120,10 @@
                 <div class="shadow-sm mb-3">
                     <img src="https://plus.unsplash.com/premium_photo-1683865776032-07bf70b0add1?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
                         class="card-img-top" alt="Weblearn">
+                </div>
+                <div class="shadow-sm mb-3">
+                    <img src="https://plus.unsplash.com/premium_photo-1683865776032-07bf70b0add1?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                        class="card-img-top" alt="Shop Now">
                 </div>
                 <div class="shadow-sm mb-3">
                     <img src="https://plus.unsplash.com/premium_photo-1683865776032-07bf70b0add1?q=80&w=1632&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
@@ -1151,9 +1306,9 @@
 
 
                 </div>
-                <div class="container mt-4">
+                <div class="container container-fluid mt-4">
                     <img src="{{ url('/') . '/storage/logo/footer_image.jpg' }}" alt="Bottom Banner"
-                        class="img-fluid w-100 rounded shadow">
+                        class="img-fluid">
                 </div>
 
 
@@ -1162,59 +1317,39 @@
         <div class="row">
             {{-- FOOTER TOOLS  --}}
             <!-- 🔹 Footer Tools Section -->
+            <!-- 🔹 Footer Tools Section with Two Rows -->
             <div class="container mt-4">
-                <div class="row bg-dark p-3 rounded shadow-sm text-center">
-
-                    <!-- Tool 1 -->
-                    <div class="col-md-2 col-4">
-                        <div class="d-flex flex-column align-items-center">
-                            <i class="fas fa-user-shield fa-2x text-warning"></i>
-                            <span class="mt-2 text-white">حماية الحساب</span>
-                        </div>
+                <div class="footer-tools">
+                    <!-- First Row -->
+                    <div class="tool">
+                        <i class="fas fa-user-shield"></i>
+                        <span>حماية الحساب</span>
+                    </div>
+                    <div class="tool">
+                        <i class="fas fa-users"></i>
+                        <span>مركز الدعم الفوري</span>
+                    </div>
+                    <div class="tool">
+                        <i class="fas fa-file-alt"></i>
+                        <span>ملاحظات</span>
+                    </div>
+                    <div class="tool">
+                        <i class="fas fa-briefcase"></i>
+                        <span>إدارة الأعمال</span>
                     </div>
 
-                    <!-- Tool 2 -->
-                    <div class="col-md-2 col-4">
-                        <div class="d-flex flex-column align-items-center">
-                            <i class="fas fa-users fa-2x text-primary"></i>
-                            <span class="mt-2 text-white">مركز الدعم الفوري</span>
-                        </div>
+                    <!-- Second Row -->
+                    <div class="tool">
+                        <i class="fas fa-globe"></i>
+                        <span>تسجيل ويب</span>
                     </div>
-
-                    <!-- Tool 3 -->
-                    <div class="col-md-2 col-4">
-                        <div class="d-flex flex-column align-items-center">
-                            <i class="fas fa-file-alt fa-2x text-success"></i>
-                            <span class="mt-2 text-white">ملاحظات</span>
-                        </div>
+                    <div class="tool">
+                        <i class="fas fa-handshake"></i>
+                        <span>الأمان عبر الإنترنت</span>
                     </div>
-
-                    <!-- Tool 4 -->
-                    <div class="col-md-2 col-4">
-                        <div class="d-flex flex-column align-items-center">
-                            <i class="fas fa-briefcase fa-2x text-danger"></i>
-                            <span class="mt-2 text-white">إدارة الأعمال</span>
-                        </div>
-                    </div>
-
-                    <!-- Tool 5 -->
-                    <div class="col-md-2 col-4">
-                        <div class="d-flex flex-column align-items-center">
-                            <i class="fas fa-globe fa-2x text-info"></i>
-                            <span class="mt-2 text-white">تسجيل ويب</span>
-                        </div>
-                    </div>
-
-                    <!-- Tool 6 -->
-                    <div class="col-md-2 col-4">
-                        <div class="d-flex flex-column align-items-center">
-                            <i class="fas fa-handshake fa-2x text-secondary"></i>
-                            <span class="mt-2 text-white">الأمان عبر الإنترنت</span>
-                        </div>
-                    </div>
-
                 </div>
             </div>
+
 
         </div>
     </div> <!-- End of Container -->
@@ -1309,7 +1444,7 @@
         setInterval(() => moveSlide(1), 3000);
 
         // Initialize
-        showSlide(slideIndex);
+        showSlide(0);
     </script>
 
     <script>
@@ -1486,8 +1621,8 @@
             document.getElementById('totalSubTotal').innerHTML = `<strong>(USD) ${total.toFixed(2)}</strong>`;
             // يمكن حساب الرسوم أو الرصيد النهائي هنا إذا كانت القواعد محددة
             // كمثال:
-            document.getElementById('fees').textContent = `(USD) ${ (total * 0.05).toFixed(2) }`; // مثلاً 5% رسوم
-            document.getElementById('finalBalance').textContent = (total - (total * 0.05)).toFixed(2);
+            // document.getElementById('fees').textContent = `(USD) ${ (total * 0.05).toFixed(2) }`; // مثلاً 5% رسوم
+            document.getElementById('finalBalance').textContent = (total).toFixed(2);
         }
 
         // الاستماع لتغيرات حقول الإدخال

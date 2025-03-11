@@ -238,10 +238,12 @@ class CustomerResource extends Resource
                                 ->label('Amount')
                                 ->numeric()
                                 ->required(),
-                            Forms\Components\Select::make('type')
-                                ->label('Transaction Type')
-                                ->options(UserAccountHistory::getTypeLabels())
-                                ->required(),
+                            ToggleButtons::make('type')->options(UserAccountHistory::getTypeLabels())
+                                ->columns(2)->default(UserAccountHistory::TYPE_INCREASE)
+                                ->icons([
+                                    'heroicon-o-plus' => UserAccountHistory::TYPE_INCREASE,
+                                    'heroicon-o-minus' => UserAccountHistory::TYPE_DECREASE,
+                                ]),
                             Forms\Components\Textarea::make('notes')
                                 ->label('Notes')
                                 ->columnSpanFull()

@@ -39,6 +39,9 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Route::get('/', [HomeController::class, 'index'])->middleware('auth');
+Route::get('/app', function () {
+    return redirect('/');
+})->name('app');
 
 // Product routes
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
@@ -168,4 +171,3 @@ Route::post('/logout', function () {
 
 Route::post('/verifyIdentifyId', [IdentifyController::class, 'verify']);
 Route::post('/withdrawal', [WithdrawalController::class, 'store'])->name('withdrawal.store');
-

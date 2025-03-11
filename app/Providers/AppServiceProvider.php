@@ -28,7 +28,7 @@ class AppServiceProvider extends ServiceProvider
         //     Register::class, // Ensure your custom page is registered
         // ]);
         FilamentAsset::register([
-            // Css::make('main', ''),
+            Css::make('main', ''),
         ]);
         Schema::defaultStringLength(191);
     }

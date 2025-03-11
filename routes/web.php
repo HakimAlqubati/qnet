@@ -1,6 +1,8 @@
 <?php
-
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Session;
 use App\Filament\Admin\Pages\Auth\Register;
+use App\Http\Controllers\CustomLoginController;
 use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Frontend\ProductController;
@@ -160,7 +162,7 @@ Route::get('/registeration',  Register::class)->name('registeration');
 Route::post('/users', [UserController::class, 'store'])->name('users.store');
 
 // Blog routes
-Route::get('/lang/{lang}', [LanguageController::class, 'switchLang'])->name('changeLang');
+// Route::get('/lang/{lang}', [LanguageController::class, 'switchLang'])->name('changeLang');
 
 require __DIR__ . '/socialstream.php';
 
@@ -171,3 +173,14 @@ Route::post('/logout', function () {
 
 Route::post('/verifyIdentifyId', [IdentifyController::class, 'verify']);
 Route::post('/withdrawal', [WithdrawalController::class, 'store'])->name('withdrawal.store');
+
+Route::post('/custom-login', [CustomLoginController::class, 'login'])->name('custom.login');
+Route::post('/logout', [CustomLoginController::class, 'logout'])->name('logout');
+
+Route::get('/change-lang/{lang}', function ($lang) {
+    if (in_array($lang, ['en', 'ar'])) {
+        Session::put('locale', $lang);
+        App::setLocale($lang);
+    }
+    return redirect()->back();
+})->name('changeLang');

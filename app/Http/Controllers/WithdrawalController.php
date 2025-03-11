@@ -40,6 +40,7 @@ class WithdrawalController extends Controller
             ], 200);
         } catch (\Exception $e) {
             DB::rollBack();
+            Log::error('Withdrawal request failed: ' ,[ $e->getMessage()]);
             return response()->json([
                 'success' => false,
                 'message' => 'Failed to process withdrawal request',

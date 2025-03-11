@@ -7,7 +7,7 @@ use Laravel\Cashier\Billable;
 
 class Subscription extends Model
 {
-    use Billable;
+    // use Billable;
 
     protected $fillable = [
         'name', 'stripe_id', 'stripe_status', 'stripe_plan', 'quantity', 'trial_ends_at', 'ends_at',

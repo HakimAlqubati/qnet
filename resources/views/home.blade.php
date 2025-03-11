@@ -565,7 +565,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            max-width: 800px;
+            /* max-width: 800px; */
             /* Adjust to proper size */
         }
 
@@ -646,8 +646,10 @@
                 </form>
                 <select class="form-select me-2" style="background-color: white; border: 1px solid black;"
                     onchange="window.location.href=this.value">
-                    <option value="{{ route('changeLang', 'ar') }}">🇸🇦 العربية</option>
-                    <option value="{{ route('changeLang', 'en') }}">🇺🇸 English</option>
+                    <option value="{{ route('changeLang', 'ar') }}" {{ app()->getLocale() == 'ar' ? 'selected' : '' }}>
+                        🇸🇦 العربية</option>
+                    <option value="{{ route('changeLang', 'en') }}" {{ app()->getLocale() == 'en' ? 'selected' : '' }}>
+                        🇺🇸 English</option>
                 </select>
 
             </div>
@@ -659,11 +661,13 @@
             <div class="user-info text-left">
                 <p class="mb-0">
                     {{-- {{ __('messages.welcome') }} --}}
-                    {{ 'مرحباً ' }}
-                    بك مجدداً! <strong>
+                    {{-- {{ 'مرحباً ' }} --}}
+                    <p>{{ __('messages.welcome') }}</p>
+
+                    <strong>
                         {{ Auth::check() ? Auth::user()->name : 'Guest' }}
                     </strong></p>
-                <p class="last-login">آخر تسجيل للدخول: 04 JAN 2024 - 23:56 (HKST)</p>
+                <p class="last-login">{{ __('messages.last_login') }}: 04 JAN 2024 - 23:56 (HKST)</p>
                 <table class="table table-borderless user-status table-bordered">
 
 
@@ -722,22 +726,25 @@
     <div class="container my-4">
         <div class="banner-container">
 
-            <!-- Announcement Section -->
-            <div class="announcement">
-                <h3>إعلان هام</h3>
-                <div class="announcement-content">
-                    <img src="{{ url('/') . '/storage/logo/side-add.png' }}" alt="Important Announcement"
-                        class="img-fluid">
-                    <p>Sales Month Calendar 2024</p>
-                    <a href="#">...Click here</a>
-                    <button>المزيد من الأخبار</button>
+            <div class="row">
+
+
+                <!-- Announcement Section -->
+                <div class="announcement col-lg-3">
+                    <h3>إعلان هام</h3>
+                    <div class="announcement-content">
+                        <img src="{{ url('/') . '/storage/logo/side-add.png' }}" alt="Important Announcement"
+                            class="img-fluid">
+                        <p>Sales Month Calendar 2024</p>
+                        <a href="#">...Click here</a>
+                        <button>المزيد من الأخبار</button>
+                    </div>
                 </div>
-            </div>
 
 
-            <!-- Banner Section -->
-            <!-- 🔹 Banner Swapper (Fixed Image Slider) -->
-            <div class="slider">
+                <!-- Banner Section -->
+                <!-- 🔹 Banner Swapper (Fixed Image Slider) -->
+                {{-- <div class="slider">
                 <div class="slides">
                     <div class="slide"><img
                             src="https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U"
@@ -764,9 +771,13 @@
                     <span class="dot" onclick="currentSlide(3)"></span>
                     <span class="dot" onclick="currentSlide(4)"></span>
                 </div>
+            </div> --}}
+
+                <div class="slider col-lg-9">
+                    <img src="{{ url('/') . '/storage/logo/new-swapper.png' }}"
+                        style="height: 100%; border-radius: 30px;" alt="">
+                </div>
             </div>
-
-
 
 
         </div>
@@ -1354,62 +1365,9 @@
         </div>
     </div> <!-- End of Container -->
 
-    <script>
-        document.getElementById('nameForm').addEventListener('submit', function(event) {
-            event.preventDefault();
 
-            let nameInput = document.getElementById('nameInput');
-            let sideSelect = document.getElementById('sideSelect');
-            let name = nameInput.value.trim();
-            let side = sideSelect.value;
 
-            if (name !== "") {
-                let tablesContainer = document.getElementById('tablesContainer');
-
-                // Create a container for the new table
-                let tableContainer = document.createElement('div');
-                tableContainer.classList.add('table-container');
-
-                // Create a new table
-                let newTable = document.createElement('table');
-                newTable.innerHTML = `
-                    <thead>
-                        <tr>
-                            <th> </th>
-                            <th>الاسم</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    </tbody>
-                `;
-
-                let tbody = newTable.querySelector('tbody');
-
-                // Add three rows with the same name
-                for (let i = 0; i < 3; i++) {
-                    let newRow = document.createElement('tr');
-                    newRow.innerHTML = `
-                        <td>
-                            <select>
-                                <option value="L" ${side === "L" ? "selected" : ""}>L</option>
-                                <option value="R" ${side === "R" ? "selected" : ""}>R</option>
-                            </select>
-                        </td>
-                        <td>${name}</td>
-                    `;
-                    tbody.appendChild(newRow);
-                }
-
-                // Add table to container and then to the main container
-                tableContainer.appendChild(newTable);
-                tablesContainer.appendChild(tableContainer);
-
-                nameInput.value = ""; // Clear input after submission
-            }
-        });
-    </script>
-
-    <script>
+    {{-- <script>
         let slideIndex = 0;
         const slidesContainer = document.querySelector(".slides");
         const slides = document.querySelectorAll(".slide");
@@ -1425,7 +1383,7 @@
             }
 
             // Move the slides
-            slidesContainer.style.transform = `translateX(${-slideIndex * 100}%)`;
+            // slidesContainer.style.transform = `translateX(${-slideIndex * 100}%)`;
 
             // Update active dot
             dots.forEach(dot => dot.classList.remove("active"));
@@ -1445,7 +1403,7 @@
 
         // Initialize
         showSlide(0);
-    </script>
+    </script> --}}
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {

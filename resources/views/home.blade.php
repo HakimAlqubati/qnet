@@ -1358,6 +1358,13 @@
                         <i class="fas fa-handshake"></i>
                         <span>الأمان عبر الإنترنت</span>
                     </div>
+                    <div class="tool">
+                        <a href="{{ url('/categories') }}" class="tool">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span>تسوق الآن</span>
+                        </a>
+                    </div>
+                    
                 </div>
             </div>
 

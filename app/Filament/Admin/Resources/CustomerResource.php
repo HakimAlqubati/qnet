@@ -5,6 +5,7 @@ namespace App\Filament\Admin\Resources;
 use App\Filament\Admin\Resources\CustomerResource\Pages\CreateCustomer;
 use App\Filament\Admin\Resources\CustomerResource\Pages\EditCustomer;
 use App\Filament\Admin\Resources\CustomerResource\Pages\ListCustomers;
+use App\Filament\Admin\Resources\CustomerResource\RelationManagers\AccountTransactionRelationManager;
 use App\Filament\Admin\Resources\CustomerResource\RelationManagers\BvHistoryRelationManager;
 use App\Filament\Admin\Resources\UserResource\Pages;
 use App\Filament\Admin\Resources\UserResource\RelationManagers;
@@ -148,15 +149,16 @@ class CustomerResource extends Resource
                     ->searchable(),
                 TextColumn::make('email')->icon('heroicon-m-envelope')->copyable()
                     ->sortable()->searchable()->limit(20)->default('@')
-                    ->toggleable(isToggledHiddenByDefault: false)
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->searchable(isIndividual: false, isGlobal: true)
                     ->copyable()
                     ->copyMessage('Email address copied')
                     ->copyMessageDuration(1500)
                     ->color('primary')
                     ->weight(FontWeight::Bold),
-                TextColumn::make('phonenumber')->label('Phone')->searchable()->icon('heroicon-m-phone')->searchable(isIndividual: false)->default('_')
-                    ->toggleable(isToggledHiddenByDefault: false)
+                TextColumn::make('phonenumber')
+                    ->label('Phone')->searchable()->icon('heroicon-m-phone')->searchable(isIndividual: false)->default('_')
+                    ->toggleable(isToggledHiddenByDefault: true)
                     ->copyable()
                     ->copyMessage('Phone number copied')
                     ->copyMessageDuration(1500)
@@ -362,6 +364,7 @@ class CustomerResource extends Resource
     {
         return [
             BvHistoryRelationManager::class,
+            AccountTransactionRelationManager::class,
         ];
     }
 

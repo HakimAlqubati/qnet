@@ -644,6 +644,11 @@
                         {{ __('تسجيل خروج') }}
                     </button>
                 </form>
+
+                <!-- 🔹 Change Password Button -->
+                <button class="btn-orange ms-2" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                    تغيير كلمة المرور
+                </button>
                 <select class="form-select me-2" style="background-color: white; border: 1px solid black;"
                     onchange="window.location.href=this.value">
                     <option value="{{ route('changeLang', 'ar') }}" {{ app()->getLocale() == 'ar' ? 'selected' : '' }}>
@@ -662,11 +667,11 @@
                 <p class="mb-0">
                     {{-- {{ __('messages.welcome') }} --}}
                     {{-- {{ 'مرحباً ' }} --}}
-                    <p>{{ __('messages.welcome') }}</p>
+                <p>{{ __('messages.welcome') }}</p>
 
-                    <strong>
-                        {{ Auth::check() ? Auth::user()->name : 'Guest' }}
-                    </strong></p>
+                <strong>
+                    {{ Auth::check() ? Auth::user()->name : 'Guest' }}
+                </strong></p>
                 <p class="last-login">{{ __('messages.last_login') }}: 04 JAN 2024 - 23:56 (HKST)</p>
                 <table class="table table-borderless user-status table-bordered">
 
@@ -944,6 +949,40 @@
             <div id="network" class="tab-pane fade">
 
             </div>
+
+            <!-- 🔹 Change Password Modal -->
+            <div class="modal fade" id="changePasswordModal" tabindex="-1"
+                aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="changePasswordModalLabel">تغيير كلمة المرور</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="إغلاق"></button>
+                        </div>
+                        <div class="modal-body">
+                            <!-- New Password Field -->
+                            <div class="mb-3">
+                                <label for="newPassword" class="form-label">كلمة المرور الجديدة</label>
+                                <input type="password" class="form-control" id="newPassword" required>
+                            </div>
+
+                            <!-- Confirm Password Field -->
+                            <div class="mb-3">
+                                <label for="confirmPassword" class="form-label">تأكيد كلمة المرور</label>
+                                <input type="password" class="form-control" id="confirmPassword" required>
+                                <small id="passwordError" class="text-danger d-none">⚠️ كلمات المرور غير
+                                    متطابقة!</small>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
+                            <button type="button" class="btn btn-warning" id="updatePasswordBtn">تحديث</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
 
             <!-- ✅ ملخص التسوية مطابق للصورة -->
             <!-- ✅ دليل التسوية (Settlement Guide) -->
@@ -1364,7 +1403,7 @@
                             <span>تسوق الآن</span>
                         </a>
                     </div>
-                    
+
                 </div>
             </div>
 
@@ -1681,6 +1720,58 @@
 
                 let modal = bootstrap.Modal.getInstance(document.getElementById("confirmationModal"));
                 modal.hide();
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const updatePasswordBtn = document.getElementById("updatePasswordBtn");
+
+            updatePasswordBtn.addEventListener("click", function() {
+                const newPassword = document.getElementById("newPassword").value.trim();
+                const confirmPassword = document.getElementById("confirmPassword").value.trim();
+                const passwordError = document.getElementById("passwordError");
+
+                passwordError.classList.add("d-none"); // Hide error initially
+
+                if (newPassword.length < 6) {
+                    passwordError.textContent = "⚠️ يجب أن تكون كلمة المرور 6 أحرف على الأقل!";
+                    passwordError.classList.remove("d-none");
+                    return;
+                }
+
+                if (newPassword !== confirmPassword) {
+                    passwordError.textContent = "⚠️ كلمات المرور غير متطابقة!";
+                    passwordError.classList.remove("d-none");
+                    return;
+                }
+
+                fetch("{{ route('password.update') }}", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]')
+                                .getAttribute("content")
+                        },
+                        body: JSON.stringify({
+                            password: newPassword,
+                            password_confirmation: confirmPassword
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            alert("✅ تم تحديث كلمة المرور بنجاح!");
+                            location.reload(); // Reload the page after password change
+                        } else {
+                            alert("❌ خطأ: " + data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error("❌ خطأ أثناء تحديث كلمة المرور:", error);
+                        alert("⚠️ حدث خطأ غير متوقع. يرجى المحاولة لاحقًا.");
+                    });
             });
         });
     </script>

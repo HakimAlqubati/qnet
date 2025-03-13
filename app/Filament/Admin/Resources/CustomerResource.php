@@ -132,6 +132,18 @@ class CustomerResource extends Resource
                                 ->prefixIcon('heroicon-m-check')->prefixIconColor(Color::Orange)
                                 ->label('Q Code'),
                         ]),
+                        Grid::make()->columns(2)->schema([
+                            TextInput::make('password')
+                                ->password()
+                                ->required(fn(string $context) => $context === 'create')
+                                ->reactive()
+                                ->dehydrateStateUsing(fn($state) => Hash::make($state)),
+                            TextInput::make('password_confirmation')
+                                ->password()
+                                ->required(fn(string $context) => $context === 'create')
+                                ->same('password')
+                                ->label('Confirm Password'),
+                        ]),
 
 
                     ])

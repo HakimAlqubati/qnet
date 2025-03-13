@@ -176,6 +176,7 @@ Route::post('/withdrawal', [WithdrawalController::class, 'store'])->name('withdr
 
 Route::post('/custom-login', [CustomLoginController::class, 'login'])->name('custom.login');
 Route::post('/logout', [CustomLoginController::class, 'logout'])->name('logout');
+Route::post('/update-password', [CustomLoginController::class, 'update'])->name('password.update');
 
 Route::get('/change-lang/{lang}', function ($lang) {
     if (in_array($lang, ['en', 'ar'])) {
@@ -184,3 +185,4 @@ Route::get('/change-lang/{lang}', function ($lang) {
     }
     return redirect()->back();
 })->name('changeLang');
+

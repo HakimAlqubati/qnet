@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 
 class CustomLoginController extends Controller
 {
@@ -41,5 +42,18 @@ class CustomLoginController extends Controller
     {
         Auth::logout();
         return redirect('/login');
+    }
+
+    public function update(Request $request)
+    {
+        $request->validate([
+            'password' => 'required|string|min:6|confirmed',
+        ]);
+
+        $user = Auth::user();
+        $user->password = Hash::make($request->password);
+        $user->save();
+
+        return response()->json(['success' => true, 'message' => 'تم تحديث كلمة المرور بنجاح!']);
     }
 }

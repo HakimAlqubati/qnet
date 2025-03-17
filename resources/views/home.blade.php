@@ -903,7 +903,6 @@
             <!-- ✅ ملخص التسوية مطابق للصورة -->
             <!-- ✅ دليل التسوية (Settlement Guide) -->
             <!-- Modal for confirmation -->
-            <!-- Modal for confirmation -->
             <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog">
@@ -922,6 +921,27 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">إلغاء</button>
                             <button type="button" class="btn btn-warning" id="confirmWithdrawal">تأكيد</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Success Modal -->
+            <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content" style="background-color: #ff8800; color: white; text-align: center;">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="successModalLabel">تم التحقق بنجاح ✅</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="إغلاق"></button>
+                        </div>
+                        <div class="modal-body">
+                            <h4>مرحبًا، <span id="modalUserName"></span>!</h4>
+                            <p>تم التحقق من رمز التعريف الخاص بك بنجاح 🎉</p>
+                            <p> {{ auth()->user()->currentBalance ?? 0 }}$</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">إغلاق</button>
                         </div>
                     </div>
                 </div>
@@ -1503,16 +1523,15 @@
                 identifyMessage.innerHTML = `<span class="text-danger">⚠️ يرجى إدخال رمز التعريف.</span>`;
                 return;
             }
+
             const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
 
-            // Send POST request to the backend API
+            // Send POST request to verify the ID
             fetch("/verifyIdentifyId", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        // "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content")
-                        "X-CSRF-TOKEN": csrfToken // Include the CSRF token
-
+                        "X-CSRF-TOKEN": csrfToken // CSRF Token
                     },
                     body: JSON.stringify({
                         code_q: qcodeInput
@@ -1522,18 +1541,29 @@
                 .then(data => {
                     if (data.success) {
                         identifyMessage.innerHTML = `<span class="text-success">✅ رمز التعريف صحيح!</span>`;
+
+                        // Get the authenticated user name
+                        let userName = "{{ auth()->user()->name ?? 'المستخدم' }}";
+
+                        // Update modal content with the name
+                        document.getElementById("modalUserName").textContent = userName;
+
+                        // Show the modal
+                        let modal = new bootstrap.Modal(document.getElementById("successModal"));
+                        modal.show();
                     } else {
                         identifyMessage.innerHTML =
                             `<span class="text-danger">❌ رمز التعريف غير صحيح. يرجى المحاولة مرة أخرى.</span>`;
                     }
                 })
                 .catch(error => {
-                    console.error("Error verifying identify ID:", error);
+                    console.error("Error verifying ID:", error);
                     identifyMessage.innerHTML =
                         `<span class="text-danger">⚠️ حدث خطأ أثناء التحقق. حاول لاحقًا.</span>`;
                 });
         }
     </script>
+
     <script>
         // دالة لحساب المجموع لكل صف والمجموع الكلي
         function calculateSubtotals() {

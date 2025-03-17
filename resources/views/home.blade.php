@@ -421,96 +421,6 @@
         }
 
 
-        /** Swapper */
-        /* 🔹 Banner Swapper (Image Slider) */
-        /* 🔹 Fixed Swapper CSS */
-        /* 🔹 Banner Swapper (Fixed Image Slider) */
-        .slider {
-            position: relative;
-            width: 75%;
-            max-width: 800px;
-            /* Ensure a fixed max width */
-            border-radius: 10px;
-            overflow: hidden;
-            height: 300px;
-        }
-
-        /* 🔹 Ensure slides display correctly */
-        .slides {
-            display: flex;
-            width: 400%;
-            /* 4 slides (4 * 100%) */
-            transition: transform 0.5s ease-in-out;
-        }
-
-        .slide {
-            width: 100%;
-            flex: 0 0 100%;
-            /* Each slide takes full container width */
-        }
-
-        /* 🔹 Ensure images fit correctly */
-        .slide img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            display: block;
-        }
-
-        /* 🔹 Navigation Arrows */
-        .prev,
-        .next {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(0, 0, 0, 0.5);
-            color: white;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-            font-size: 20px;
-            border-radius: 50%;
-        }
-
-        .prev {
-            left: 10px;
-        }
-
-        .next {
-            right: 10px;
-        }
-
-        .prev:hover,
-        .next:hover {
-            background: black;
-        }
-
-        /* 🔹 Pagination Dots */
-        .pagination-container {
-            text-align: center;
-            position: absolute;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-        }
-
-        .dot {
-            height: 12px;
-            width: 12px;
-            margin: 5px;
-            background-color: #bbb;
-            border-radius: 50%;
-            display: inline-block;
-            cursor: pointer;
-        }
-
-        .active,
-        .dot:hover {
-            background-color: #ff6600;
-        }
-
-
-        /** end Swapper */
         /**start style with force desktop */
 
         .container,
@@ -583,7 +493,7 @@
         /* Footer Tools Grid Layout */
         .footer-tools {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
+            grid-template-columns: repeat(5, 1fr);
             /* 4 columns per row */
             gap: 15px;
             text-align: center;
@@ -626,6 +536,17 @@
         }
 
         /** end new tools */
+
+        .bv_container {
+            background: orange;
+            border-radius: 6px;
+        }
+
+        .bv_container small,
+        .bv_container span {
+            color: white !important;
+
+        }
     </style>
 </head>
 
@@ -746,41 +667,36 @@
                     </div>
                 </div>
 
-
-                <!-- Banner Section -->
-                <!-- 🔹 Banner Swapper (Fixed Image Slider) -->
-                {{-- <div class="slider">
-                <div class="slides">
-                    <div class="slide"><img
-                            src="https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U"
-                            alt="Image 1"></div>
-                    <div class="slide"><img
-                            src="https://fastly.picsum.photos/id/866/200/300.jpg?hmac=rcadCENKh4rD6MAp6V_ma-AyWv641M4iiOpe1RyFHeI"
-                            alt="Image 2"></div>
-                    <div class="slide"><img
-                            src="https://fastly.picsum.photos/id/237/200/300.jpg?hmac=TmmQSbShHz9CdQm0NkEjx1Dyh_Y984R9LpNrpvH2D_U"
-                            alt="Image 3"></div>
-                    <div class="slide"><img
-                            src="https://fastly.picsum.photos/id/866/200/300.jpg?hmac=rcadCENKh4rD6MAp6V_ma-AyWv641M4iiOpe1RyFHeI"
-                            alt="Image 4"></div>
-                </div>
-
-                <!-- Navigation Arrows -->
-                <button class="prev" onclick="moveSlide(-1)">&#10094;</button>
-                <button class="next" onclick="moveSlide(1)">&#10095;</button>
-
-                <!-- Pagination Dots -->
-                <div class="pagination-container">
-                    <span class="dot" onclick="currentSlide(1)"></span>
-                    <span class="dot" onclick="currentSlide(2)"></span>
-                    <span class="dot" onclick="currentSlide(3)"></span>
-                    <span class="dot" onclick="currentSlide(4)"></span>
-                </div>
-            </div> --}}
+                {{-- Swapper Section --}}
 
                 <div class="slider col-lg-9">
-                    <img src="{{ url('/') . '/storage/logo/new-swapper.png' }}"
-                        style="height: 100%; border-radius: 30px;" alt="">
+                    <div id="swapperCarousel" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <img src="{{ url('/') . '/storage/logo/new-swapper.png' }}" class="d-block w-100"
+                                    alt="Swapper Image 1">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="{{ url('/') . '/storage/logo/new-swapper.png' }}" class="d-block w-100"
+                                    alt="Swapper Image 2">
+                            </div>
+                            <div class="carousel-item">
+                                <img src="{{ url('/') . '/storage/logo/new-swapper.png' }}" class="d-block w-100"
+                                    alt="Swapper Image 3">
+                            </div>
+                        </div>
+                        <!-- Swapper Controls -->
+                        <button class="carousel-control-prev" type="button" data-bs-target="#swapperCarousel"
+                            data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#swapperCarousel"
+                            data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                    {{-- <img src="{{ url('/') . '/storage/logo/new-swapper.png' }}"
+                        style="height: 100%; border-radius: 30px;width: 100%;" alt=""> --}}
                 </div>
             </div>
 
@@ -1269,13 +1185,13 @@
                             </div>
                             <div class="row mb-3">
                                 <div class="col-6">
-                                    <div class="text-center">
+                                    <div class="text-center bv_container">
                                         <small class="d-block text-muted">Left BV</small>
                                         <span class="h5" id="leftBV">0</span>
                                     </div>
                                 </div>
                                 <div class="col-6">
-                                    <div class="text-center">
+                                    <div class="text-center bv_container">
                                         <small class="d-block text-muted">Right BV</small>
                                         <span class="h5" id="rightBV">0</span>
                                     </div>
@@ -1284,13 +1200,13 @@
 
                             <div class="row mb-3">
                                 <div class="col-6">
-                                    <div class="text-center">
+                                    <div class="text-center bv_container">
                                         <small class="d-block text-muted">Left BV لجنة</small>
                                         <span class="h5" id="leftLegBV">0</span>
                                     </div>
                                 </div>
                                 <div class="col-6">
-                                    <div class="text-center">
+                                    <div class="text-center bv_container">
                                         <small class="d-block text-muted">Right BV لجنة</small>
                                         <span class="h5" id="rightLegBV">0</span>
                                     </div>
@@ -1373,29 +1289,33 @@
                     <!-- First Row -->
                     <div class="tool">
                         <i class="fas fa-user-shield"></i>
-                        <span>حماية الحساب</span>
+                        <span>الملف الشخصي الخاص بي</span>
                     </div>
                     <div class="tool">
                         <i class="fas fa-users"></i>
-                        <span>مركز الدعم الفوري</span>
+                        <span>نشاطي وأدواتي</span>
                     </div>
                     <div class="tool">
                         <i class="fas fa-file-alt"></i>
-                        <span>ملاحظات</span>
+                        <span>أدواتي</span>
                     </div>
                     <div class="tool">
                         <i class="fas fa-briefcase"></i>
-                        <span>إدارة الأعمال</span>
+                        <span>مركز الدعم العالمي الخاص بي</span>
                     </div>
 
                     <!-- Second Row -->
                     <div class="tool">
                         <i class="fas fa-globe"></i>
-                        <span>تسجيل ويب</span>
+                        <span>عمولتي </span>
+                    </div>
+                    <div class="tool">
+                        <i class=""></i>
+                        <span> </span>
                     </div>
                     <div class="tool">
                         <i class="fas fa-handshake"></i>
-                        <span>الأمان عبر الإنترنت</span>
+                        <span>لوحة التحكم الخاصة بي</span>
                     </div>
                     <div class="tool">
                         <a href="{{ url('/categories') }}" class="tool">
@@ -1403,7 +1323,14 @@
                             <span>تسوق الآن</span>
                         </a>
                     </div>
-
+                    <div class="tool">
+                        <i class="fas fa-globe"></i>
+                        <span>معاملاتي </span>
+                    </div>
+                    <div class="tool">
+                        <i class="fas fa-briefcase"></i>
+                        <span>معاملاتي</span>
+                    </div>
                 </div>
             </div>
 

@@ -27,6 +27,9 @@ use Filament\Support\Colors\Color;
 use Filament\Support\Enums\FontWeight;
 use Filament\Tables;
 use Filament\Tables\Actions\ActionGroup;
+use Filament\Tables\Columns\Layout\Panel;
+use Filament\Tables\Columns\Layout\Split;
+use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -155,50 +158,77 @@ class CustomerResource extends Resource
         return $table->striped()
             ->defaultSort('id', 'desc')
             ->columns([
-                Tables\Columns\ImageColumn::make('profile_photo_path')
-                    ->label(""),
-                Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
-                TextColumn::make('email')->icon('heroicon-m-envelope')->copyable()
-                    ->sortable()->searchable()->limit(20)->default('@')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->searchable(isIndividual: false, isGlobal: true)
-                    ->copyable()
-                    ->copyMessage('Email address copied')
-                    ->copyMessageDuration(1500)
-                    ->color('primary')
-                    ->weight(FontWeight::Bold),
-                TextColumn::make('phonenumber')
-                    ->label('Phone')->searchable()->icon('heroicon-m-phone')->searchable(isIndividual: false)->default('_')
-                    ->toggleable(isToggledHiddenByDefault: true)
-                    ->copyable()
-                    ->copyMessage('Phone number copied')
-                    ->copyMessageDuration(1500)
-                    ->color('primary')
-                    ->weight(FontWeight::Bold),
-                TextColumn::make('childrenCount')->label('Persons Under')->toggleable()->alignCenter(true),
-                // TextColumn::make('currentRightBV')->label('Right BV')
-                //     ->toggleable()->alignCenter(true),
-                TextColumn::make('currentRightBV')->label('Right BV')
-                    ->toggleable()->alignCenter(true),
-                TextColumn::make('currentLeftBV')->label('Left BV')
-                    ->toggleable()->alignCenter(true),
-                TextColumn::make('current_balance')->label('Dollor Account')
-                    ->toggleable()->alignCenter(true),
-                TextColumn::make('currentRSP')->label('Current RSP')->toggleable()->alignCenter(true),
-                Tables\Columns\TextColumn::make('email_verified_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                // \Filament\Tables\Columns\Layout\Grid::make()
+                // ->columns(1)
+                // ->schema([
+
+                Split::make([
+                    // Tables\Columns\ImageColumn::make('profile_photo_path')
+                    //     ->label(""),
+
+                    Tables\Columns\TextColumn::make('name')
+                        ->searchable()
+                        ->icon('heroicon-m-user-circle')
+                        ->color('primary')
+                        ->weight(FontWeight::Bold),
+                    TextColumn::make('email')
+                        ->icon('heroicon-m-envelope')
+                        ->copyable()
+                        ->sortable()->searchable()->limit(20)->default('@')
+                        ->toggleable(isToggledHiddenByDefault: true)
+                        ->searchable(isIndividual: false, isGlobal: true)
+                        ->copyable()
+                        ->copyMessage('Email address copied')
+                        ->copyMessageDuration(1500)
+                        ->color('primary')
+                        ->weight(FontWeight::Bold),
+                    TextColumn::make('phonenumber')
+                        ->label('Phone')->searchable()->icon('heroicon-m-phone')->searchable(isIndividual: false)->default('_')
+                        ->toggleable(isToggledHiddenByDefault: true)
+                        ->copyable()
+                        ->copyMessage('Phone number copied')
+                        ->copyMessageDuration(1500)
+                        ->color('primary')
+                        ->weight(FontWeight::Bold),
+                ]),
+                Panel::make([
+                    Split::make([
+                        TextColumn::make('childrenCount')
+                            ->label('Persons Under')
+                            ->toggleable()->alignCenter(false)
+                            ->formatStateUsing(function ($state) {
+                                return "($state) Persons Under";
+                            }),
+
+                        TextColumn::make('currentRightBV')
+                            ->label('Right BV')
+                            ->toggleable()->alignCenter(false)
+                            ->formatStateUsing(function ($state) {
+                                return "($state) Right BV";
+                            }),
+                        TextColumn::make('currentLeftBV')
+                            ->label('Left BV')
+                            ->toggleable()->alignCenter(false)
+                            ->formatStateUsing(function ($state) {
+                                return "($state) Left BV";
+                            }),
+                        TextColumn::make('current_balance')
+                            ->label('Dollor Account')
+                            ->toggleable()->alignCenter(false)
+                            ->formatStateUsing(function ($state) {
+                                return "$ $state";
+                            }),
+                        TextColumn::make('currentRSP')
+                            ->label('Current RSP')
+                            ->toggleable()->alignCenter(false)
+                            ->formatStateUsing(function ($state) {
+                                return "RSP: $state";
+                            }),
+                    ]),
+                ])->collapsible()->collapsed(false),
+
             ])
+            ->contentGrid(['md' => 1, 'xl' => 1])
             ->filters([
                 //
             ])
@@ -360,10 +390,10 @@ class CustomerResource extends Resource
                     ->button()
                     ->color(Color::Green),
 
-                ActionGroup::make([
-                    Tables\Actions\EditAction::make(),
-                    Tables\Actions\DeleteAction::make(),
-                ]),
+                Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+                // ActionGroup::make([
+                // ]),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

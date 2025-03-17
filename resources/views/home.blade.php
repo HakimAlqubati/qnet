@@ -1310,7 +1310,7 @@
                                     </p>
                                     <small class="d-block">
                                         ستنتهي صلاحية استبدال التعريف الشخصي لك في غضون <span
-                                            id="daysRemaining">{{ round(365 - now()->diffInDays(auth()->user()->created_at),0) }}</span>
+                                            id="daysRemaining">{{ round(365 - now()->diffInDays(auth()->user()->created_at),0)-40 }}</span>
                                         يومًا
                                     </small>
 

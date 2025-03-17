@@ -586,20 +586,21 @@
             /* Push below image */
             display: flex;
             justify-content: center;
-            margin-top: 10px;
             gap: 8px;
         }
 
         /* 🔹 Custom Dots */
         .carousel-indicators button {
-            width: 12px;
-            height: 12px;
+            width: 15px !important;
+            height: 15px !important;
             border-radius: 50%;
             background-color: #ff6600 !important;
             /* Filled orange dots */
             border: none;
             opacity: 0.6;
             transition: opacity 0.3s;
+            border-top: 0px solid transparent !important;
+            border-bottom: 0px solid transparent !important;
         }
 
         /* 🔹 Active Dot */

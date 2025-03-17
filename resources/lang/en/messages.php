@@ -28,4 +28,5 @@ return [
     'new_members' => 'New Members in My Network',
     'membership_number' => 'Membership Number',
     'country' => 'Country',
+    'change_password' => 'Change Password',
 ];

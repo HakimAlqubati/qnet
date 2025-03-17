@@ -26,19 +26,49 @@
             padding-bottom: 5px;
         }
 
-        /* 🔹 Logout Button */
+        /* General Button Styling */
+        /* 🔹 General Button Styling */
         .btn-orange {
-            background-color: #ff6600;
+            background: linear-gradient(135deg, #ff6600, #ff8800);
             color: white;
             border: none;
-            padding: 5px 10px;
+            padding: 10px 20px;
             font-size: 14px;
-            border-radius: 5px;
+            border-radius: 8px;
+            /* Subtle roundness */
             cursor: pointer;
+            font-weight: bold;
+            text-align: center;
+            box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 140px;
+            height: 45px;
         }
 
+        /* 🔹 Hover Effect */
         .btn-orange:hover {
-            background-color: #e65c00;
+            background: linear-gradient(135deg, #e65c00, #ff7300);
+            transform: translateY(-2px);
+            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* 🔹 Click Effect */
+        .btn-orange:active {
+            transform: scale(0.98);
+        }
+
+        /* 🔹 Button Container */
+        .btn-group-custom {
+            display: flex;
+            gap: 12px;
+        }
+
+        /* 🔹 Ensure Text is Readable */
+        .btn-orange span {
+            line-height: 1.4;
         }
 
         /* 🔹 Language Selector */
@@ -494,10 +524,10 @@
         .footer-tools {
             display: grid;
             grid-template-columns: repeat(5, 1fr);
-            /* 4 columns per row */
             gap: 15px;
             text-align: center;
-            background-color: #222;
+            background-color: #d3d3d3;
+            /* Changed from black (#222) to gray */
             padding: 20px;
             border-radius: 8px;
         }
@@ -508,10 +538,10 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            color: white;
             font-size: 14px;
             padding: 15px;
-            background-color: #333;
+            background-color: #929292;
+            color: #ffffff;
             border-radius: 8px;
             transition: 0.3s;
         }
@@ -519,7 +549,7 @@
         .footer-tools .tool i {
             font-size: 30px;
             margin-bottom: 10px;
-            color: #ffa033;
+            color: ##ffff;
         }
 
         .footer-tools .tool:hover {
@@ -592,17 +622,22 @@
 
             <!-- Left Section: Language Selector & Logout Button -->
             <div class="d-flex align-items-center">
-                <form method="POST" action="{{ route('logout') }}" class="d-inline">
-                    @csrf
-                    <button type="submit" class="btn-orange">
-                        {{ __('تسجيل خروج') }}
-                    </button>
-                </form>
+                <div class="btn-group-custom">
 
-                <!-- 🔹 Change Password Button -->
-                <button class="btn-orange ms-2" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
-                    تغيير كلمة المرور
-                </button>
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="btn-orange">
+                            <span>
+                                {{ __('messages.logout') }}
+                            </span>
+                        </button>
+                    </form>
+
+                    <!-- 🔹 Change Password Button -->
+                    <button class="btn-orange" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                        <span>{{ __('messages.change_password') }}</span>
+                    </button>
+                </div>
                 <select class="form-select me-2" style="background-color: white; border: 1px solid black;"
                     onchange="window.location.href=this.value">
                     <option value="{{ route('changeLang', 'ar') }}" {{ app()->getLocale() == 'ar' ? 'selected' : '' }}>
@@ -1310,7 +1345,7 @@
                                     </p>
                                     <small class="d-block">
                                         ستنتهي صلاحية استبدال التعريف الشخصي لك في غضون <span
-                                            id="daysRemaining">{{ round(365 - now()->diffInDays(auth()->user()->created_at),0)-40 }}</span>
+                                            id="daysRemaining">{{ round(365 - now()->diffInDays(auth()->user()->created_at), 0) - 40 }}</span>
                                         يومًا
                                     </small>
 

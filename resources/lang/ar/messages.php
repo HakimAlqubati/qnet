@@ -28,4 +28,5 @@ return [
     'new_members' => 'أعضاء جدد بشبكتي',
     'membership_number' => 'رقم العضوية',
     'country' => 'الدولة',
+    'change_password' => 'تغيير كلمة المرور',
 ];

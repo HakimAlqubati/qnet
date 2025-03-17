@@ -1305,7 +1305,7 @@
                                 <div class="bg-orange p-3 rounded text-white" style="background: orange">
                                     <p class="fw-bold">تم التحقق بنجاح ✅</p>
                                     <p>تم التحقق من رمز التعريف الخاص بك بنجاح 🎉</p>
-                                    <p class="fs-5 fw-bold">💰 <span id="accountBalance">22.30</span> دولار أمريكي</p>
+                                    <p class="fs-5 fw-bold">💰 <span id="accountBalance">{{auth()->user()->balance??0}}</span> دولار أمريكي</p>
                                     <small class="d-block">ستنتهي صلاحية استبدال التعريف الشخصي لك في غضون <span
                                             id="daysRemaining">269</span> يومًا</small>
                                 </div>
@@ -1609,7 +1609,7 @@
                         qAccountResult.style.display = "block";
 
                         // Update values dynamically (Replace with actual response data)
-                        accountBalance.textContent = data.balance ?? "22.30"; // Example: 22.30 USD
+                        // accountBalance.textContent = data.balance ?? "22.30"; // Example: 22.30 USD
                         daysRemaining.textContent = data.daysRemaining ?? "269"; // Example: 269 days
                     } else {
                         identifyMessage.innerHTML =

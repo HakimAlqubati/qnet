@@ -669,7 +669,7 @@
 
                 {{-- Swapper Section --}}
 
-                <div class="slider col-lg-9">
+                <div class="slider col-lg-9" style="max-width: 712px;">
                     <div id="swapperCarousel" class="carousel slide" data-bs-ride="carousel">
                         <div class="carousel-inner">
                             <div class="carousel-item active">

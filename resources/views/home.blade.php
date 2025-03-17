@@ -1305,9 +1305,15 @@
                                 <div class="bg-orange p-3 rounded text-white" style="background: orange">
                                     <p class="fw-bold">تم التحقق بنجاح ✅</p>
                                     <p>تم التحقق من رمز التعريف الخاص بك بنجاح 🎉</p>
-                                    <p class="fs-5 fw-bold">💰 <span id="accountBalance">{{auth()->user()->balance??0}}</span> دولار أمريكي</p>
-                                    <small class="d-block">ستنتهي صلاحية استبدال التعريف الشخصي لك في غضون <span
-                                            id="daysRemaining">269</span> يومًا</small>
+                                    <p class="fs-5 fw-bold">💰 <span
+                                            id="accountBalance">{{ auth()->user()->balance ?? 0 }}</span> دولار أمريكي
+                                    </p>
+                                    <small class="d-block">
+                                        ستنتهي صلاحية استبدال التعريف الشخصي لك في غضون <span
+                                            id="daysRemaining">{{ 365 - now()->diffInDays(auth()->user()->created_at) }}</span>
+                                        يومًا
+                                    </small>
+
                                 </div>
                             </div>
                         </div>
@@ -1610,7 +1616,7 @@
 
                         // Update values dynamically (Replace with actual response data)
                         // accountBalance.textContent = data.balance ?? "22.30"; // Example: 22.30 USD
-                        daysRemaining.textContent = data.daysRemaining ?? "269"; // Example: 269 days
+                        // daysRemaining.textContent = data.daysRemaining ?? "269"; // Example: 269 days
                     } else {
                         identifyMessage.innerHTML =
                             `<span class="text-danger">❌ رمز التعريف غير صحيح. يرجى المحاولة مرة أخرى.</span>`;
@@ -1619,7 +1625,7 @@
                 .catch(error => {
                     console.error("Error verifying ID:", error);
                     identifyMessage.innerHTML =
-                    `<span class="text-danger">⚠️ حدث خطأ أثناء التحقق. حاول لاحقًا.</span>`;
+                        `<span class="text-danger">⚠️ حدث خطأ أثناء التحقق. حاول لاحقًا.</span>`;
                 });
         }
     </script>

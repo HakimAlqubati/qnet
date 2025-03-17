@@ -547,6 +547,39 @@
             color: white !important;
 
         }
+
+        /** Start Swapper */
+        /* 🔹 Style for Swapper Indicators */
+        .carousel-indicators {
+            position: relative;
+            bottom: -15px;
+            /* Push below image */
+            display: flex;
+            justify-content: center;
+            margin-top: 10px;
+            gap: 8px;
+        }
+
+        /* 🔹 Custom Dots */
+        .carousel-indicators button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #ff6600 !important;
+            /* Filled orange dots */
+            border: none;
+            opacity: 0.6;
+            transition: opacity 0.3s;
+        }
+
+        /* 🔹 Active Dot */
+        .carousel-indicators .active {
+            opacity: 1;
+            transform: scale(1.2);
+            /* Slightly larger active dot */
+        }
+
+        /** End Swapper */
     </style>
 </head>
 
@@ -685,7 +718,8 @@
                                     alt="Swapper Image 3">
                             </div>
                         </div>
-                        <!-- Swapper Controls -->
+
+                        <!-- 🔹 Swapper Controls -->
                         <button class="carousel-control-prev" type="button" data-bs-target="#swapperCarousel"
                             data-bs-slide="prev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -695,9 +729,19 @@
                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
                         </button>
                     </div>
-                    {{-- <img src="{{ url('/') . '/storage/logo/new-swapper.png' }}"
-                        style="height: 100%; border-radius: 30px;width: 100%;" alt=""> --}}
+
+                    <!-- 🔹 Move Indicators Below the Image -->
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#swapperCarousel" data-bs-slide-to="0" class="active"
+                            aria-label="Slide 1"></button>
+                        <button type="button" data-bs-target="#swapperCarousel" data-bs-slide-to="1"
+                            aria-label="Slide 2"></button>
+                        <button type="button" data-bs-target="#swapperCarousel" data-bs-slide-to="2"
+                            aria-label="Slide 3"></button>
+                    </div>
                 </div>
+
+
             </div>
 
 
@@ -1244,15 +1288,31 @@
                 <!-- 🔹 User Info & Verification -->
                 <div class="row mt-3">
 
-                    <div class="col-md-4">
+                    <div id="qAccountSection" class="col-md-4">
                         <div class="card shadow-sm p-3 text-center">
                             <h5 class="text-warning" style="text-align: left;">حساب Q</h5>
-                            <input type="text" id="qcodeInput" class="form-control mb-2"
-                                placeholder="أدخل رمز التعريف">
-                            <button class="btn btn-warning w-100" onclick="verifyIdentifyId()">التحقق</button>
-                            <div id="identifyMessage" class="mt-2"></div> <!-- Placeholder for messages -->
+
+                            <!-- Form Section -->
+                            <div id="qAccountForm">
+                                <input type="text" id="qcodeInput" class="form-control mb-2"
+                                    placeholder="أدخل رمز التعريف">
+                                <button class="btn btn-warning w-100" onclick="verifyIdentifyId()">التحقق</button>
+                                <div id="identifyMessage" class="mt-2"></div> <!-- Placeholder for messages -->
+                            </div>
+
+                            <!-- Success Result Section (Initially Hidden) -->
+                            <div id="qAccountResult" class="success-box p-3" style="display: none;">
+                                <div class="bg-orange p-3 rounded text-white" style="background: orange">
+                                    <p class="fw-bold">تم التحقق بنجاح ✅</p>
+                                    <p>تم التحقق من رمز التعريف الخاص بك بنجاح 🎉</p>
+                                    <p class="fs-5 fw-bold">💰 <span id="accountBalance">22.30</span> دولار أمريكي</p>
+                                    <small class="d-block">ستنتهي صلاحية استبدال التعريف الشخصي لك في غضون <span
+                                            id="daysRemaining">269</span> يومًا</small>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
 
                     <div class="col-md-8">
                         <div class="card shadow-sm p-3">
@@ -1515,6 +1575,10 @@
         function verifyIdentifyId() {
             const qcodeInput = document.getElementById("qcodeInput").value.trim();
             const identifyMessage = document.getElementById("identifyMessage");
+            const qAccountForm = document.getElementById("qAccountForm");
+            const qAccountResult = document.getElementById("qAccountResult");
+            const accountBalance = document.getElementById("accountBalance");
+            const daysRemaining = document.getElementById("daysRemaining");
 
             // Clear previous messages
             identifyMessage.innerHTML = "";
@@ -1526,12 +1590,12 @@
 
             const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute("content");
 
-            // Send POST request to verify the ID
+            // Simulated API request (Replace with actual API call)
             fetch("/verifyIdentifyId", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
-                        "X-CSRF-TOKEN": csrfToken // CSRF Token
+                        "X-CSRF-TOKEN": csrfToken
                     },
                     body: JSON.stringify({
                         code_q: qcodeInput
@@ -1540,17 +1604,13 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        identifyMessage.innerHTML = `<span class="text-success">✅ رمز التعريف صحيح!</span>`;
+                        // Hide form and show the success message
+                        qAccountForm.style.display = "none";
+                        qAccountResult.style.display = "block";
 
-                        // Get the authenticated user name
-                        let userName = "{{ auth()->user()->name ?? 'المستخدم' }}";
-
-                        // Update modal content with the name
-                        document.getElementById("modalUserName").textContent = userName;
-
-                        // Show the modal
-                        let modal = new bootstrap.Modal(document.getElementById("successModal"));
-                        modal.show();
+                        // Update values dynamically (Replace with actual response data)
+                        accountBalance.textContent = data.balance ?? "22.30"; // Example: 22.30 USD
+                        daysRemaining.textContent = data.daysRemaining ?? "269"; // Example: 269 days
                     } else {
                         identifyMessage.innerHTML =
                             `<span class="text-danger">❌ رمز التعريف غير صحيح. يرجى المحاولة مرة أخرى.</span>`;
@@ -1559,11 +1619,10 @@
                 .catch(error => {
                     console.error("Error verifying ID:", error);
                     identifyMessage.innerHTML =
-                        `<span class="text-danger">⚠️ حدث خطأ أثناء التحقق. حاول لاحقًا.</span>`;
+                    `<span class="text-danger">⚠️ حدث خطأ أثناء التحقق. حاول لاحقًا.</span>`;
                 });
         }
     </script>
-
     <script>
         // دالة لحساب المجموع لكل صف والمجموع الكلي
         function calculateSubtotals() {
